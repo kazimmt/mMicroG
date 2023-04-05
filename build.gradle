@@ -1,0 +1,87 @@
+/*
+ * SPDX-FileCopyrightText: 2013 microG Project Team
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+buildscript {
+    ext.applicationNamespace = "com.google.android.gms"
+    ext.basePackageName = "com.mgoogle"
+
+    ext.cronetVersion = '102.5005.125'
+    ext.safeParcelVersion = '1.7.1'
+    ext.wearableVersion = '0.1.1'
+
+    ext.coroutineVersion = '1.6.4'
+
+    ext.annotationVersion = '1.6.0'
+    ext.appcompatVersion = '1.6.1'
+    ext.biometricVersion = '1.1.0'
+    ext.coreVersion = '1.9.0'
+    ext.fragmentVersion = '1.5.5'
+    ext.lifecycleVersion = '2.6.1'
+    ext.loaderVersion = '1.1.0'
+    ext.mediarouterVersion = '1.4.0'
+    ext.multidexVersion = '2.0.1'
+    ext.navigationVersion = '2.5.3'
+    ext.preferenceVersion = '1.2.0'
+    ext.recyclerviewVersion = '1.2.0'
+    ext.webkitVersion = '1.7.0'
+
+    ext.slf4jVersion = '1.7.36'
+    ext.volleyVersion = '1.2.1'
+    ext.wireVersion = '4.7.0'
+
+    ext.androidBuildGradleVersion = '7.4.2'
+
+    ext.androidBuildVersionTools = '33.0.2'
+
+    ext.androidMinSdk = 29
+    ext.androidTargetSdk = 30
+    ext.androidCompileSdk = 33
+
+    ext.localProperties = new Properties()
+
+    try {
+        ext.localProperties.load(rootProject.file('local.properties').newDataInputStream())
+    } catch (ignored) {
+        // Ignore
+    }
+
+    repositories {
+        mavenCentral()
+        google()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:$androidBuildGradleVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20"
+        classpath "com.squareup.wire:wire-gradle-plugin:$wireVersion"
+        classpath "com.github.kezong:fat-aar:1.3.8"
+    }
+}
+
+allprojects {
+    apply plugin: 'idea'
+
+    group = 'org.microg.gms'
+    version = "mMicroG 0.2.28.231818"
+    ext.appVersionCode = 231818000
+    ext.isReleaseVersion = false
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+        google()
+    }
+    afterEvaluate {
+        // Temporary hack for Android Studio
+        if (project.plugins.hasPlugin('com.android.base')) {
+            dependencies {
+                compileOnly "org.microg:safe-parcel:$safeParcelVersion"
+                testCompileOnly "org.microg:safe-parcel:$safeParcelVersion"
+            }
+        }
+    }
+}
+
