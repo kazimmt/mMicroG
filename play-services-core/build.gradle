@@ -76,10 +76,10 @@ dependencies {
 }
 
 android {
+    namespace "$applicationNamespace"
+
     compileSdkVersion androidCompileSdk
     buildToolsVersion "$androidBuildVersionTools"
-
-    namespace "$applicationNamespace"
 
     defaultConfig {
         applicationId "${basePackageName}.android.gms"
@@ -104,7 +104,7 @@ android {
             abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
 
-        buildConfigField "String", "APPLICATION_NAMESPACE", "\"$applicationNamespace\""
+        buildConfigField "String", "APPLICATION_NAMESPACE", "\"${android.namespace}\""
         buildConfigField "String", "BASE_PACKAGE_NAME", "\"$basePackageName\""
         manifestPlaceholders = [
                 basePackageName: "$basePackageName"
