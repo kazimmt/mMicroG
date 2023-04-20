@@ -11,9 +11,9 @@ import org.microg.gms.base.core.BuildConfig
 internal object PackageSpoofUtils {
     private const val TAG = "SpoofUtils"
     private const val META_SPOOF_PACKAGE_NAME =
-        "${BuildConfig.BASE_PACKAGE_NAME}.android.gms.SPOOFED_PACKAGE_NAME"
+        BuildConfig.BASE_PACKAGE_NAME + ".android.gms.SPOOFED_PACKAGE_NAME"
     private const val META_SPOOF_PACKAGE_SIGNATURE =
-        "${BuildConfig.BASE_PACKAGE_NAME}.android.gms.SPOOFED_PACKAGE_SIGNATURE"
+        BuildConfig.BASE_PACKAGE_NAME + ".android.gms.SPOOFED_PACKAGE_SIGNATURE"
 
     private val spoofedPackageNameCache = HashMap<String, String>()
     private val spoofedPackageSignatureCache = HashMap<String, String>()
@@ -142,6 +142,8 @@ internal object PackageSpoofUtils {
      */
     private fun getPackageMetadata(packageManager: PackageManager, packageName: String): Bundle? {
         return try {
+            // PackageManager.getPackageInfo() has been deprecated in targetSdkVersion 30+
+            // To solve this, add the QUERY_ALL_PACKAGES permission to AndroidManifest.xml
             packageManager
                 .getPackageInfo(packageName, PackageManager.GET_META_DATA)
                 ?.applicationInfo
