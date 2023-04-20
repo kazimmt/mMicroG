@@ -40,6 +40,33 @@ internal object PackageSpoofUtils {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * spoof the signature of a known package
+     *
+     * @param packageName name of the package to check
+     * @param realSignature the real package signature
+     * @return either the spoofed or the real signature, depending on if the package is known
+     */
+    @JvmStatic
+    @JvmName("spoofKnownPackageStringSignature")
+    fun spoofKnownPackageStringSignature(
+        packageName: String,
+        realSignature: String
+    ): String {
+        val spoofedPackageName = if (packageName.endsWith("youtube")) "com.google.android.apps.youtube"
+        else if (packageName.endsWith("youtube.music")) "com.google.android.apps.youtube.music"
+        else return realSignature // unknown package
+
+        val spoofedSignature = PackageUtils.KNOWN_GOOGLE_PACKAGES[spoofedPackageName]!!
+
+        Log.i(TAG, "package signature of $packageName spoofed to $spoofedSignature")
+
+        return spoofedSignature
+    }
+
+    /**
+>>>>>>> 05193d4e (Change package name dynamically)
      * spoof the signature of a package, if a spoofed name is set
      *
      * @param packageManager manager used to get package information
@@ -142,6 +169,8 @@ internal object PackageSpoofUtils {
      */
     private fun getPackageMetadata(packageManager: PackageManager, packageName: String): Bundle? {
         return try {
+            // PackageManager.getPackageInfo() has been deprecated in targetSdkVersion 30+
+            // To solve this, add the QUERY_ALL_PACKAGES permission to AndroidManifest.xml
             packageManager
                 .getPackageInfo(packageName, PackageManager.GET_META_DATA)
                 ?.applicationInfo
