@@ -5,5 +5,5 @@
   -->
 
 <resources>
-    <integer name="google_play_services_version">231612000</integer>
+    <integer name="google_play_services_version">231715028</integer>
 </resources>
