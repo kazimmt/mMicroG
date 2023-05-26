@@ -11,6 +11,6 @@ A big thanks to [Shadow578](https://github.com/shadow578) for its first implemen
    
 * Note 2: No features or changes will be implemented that are not strictly related to the repository update.
    
-* Note 3: Where 'Play Services' version code values are stored?  --->  { build.gradle (ext.appVersionCode); play-services-basement (version.xml); RecaptchaClientImpl.kt (params.version)
+* Note 3: Where 'Play Services' version code values are stored?  --->  { build.gradle (ext.appVersionCode); play-services-basement (version.xml); RecaptchaClientImpl.java (params.version)
    
 </b>
