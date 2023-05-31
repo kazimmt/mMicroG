@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Material3.DayNight" parent="Theme.Material3.Dark">
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+    </style>
+
+</resources>

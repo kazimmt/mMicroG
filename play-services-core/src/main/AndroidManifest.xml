@@ -116,7 +116,7 @@
         android:icon="@mipmap/ic_core_service_app"
         android:label="@string/gms_app_name"
         android:multiArch="true"
-        android:theme="@style/Theme.AppCompat.DayNight">
+        android:theme="@style/AppTheme">
 
         <library android:name="${basePackageName}.android.gms" />
 
@@ -138,7 +138,7 @@
             android:exported="true"
             android:label="@string/pick_place_title"
             android:process=":ui"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.location.places.ui.PICK_PLACE" />
 
@@ -379,7 +379,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:process=":ui"
-            android:theme="@style/Theme.AppCompat.DayNight.Dialog" />
+            android:theme="@style/AppTheme" />
 
         <service
             android:name=".auth.GetToken"
@@ -434,7 +434,7 @@
         <activity
             android:name="org.microg.gms.games.UpgradeActivity"
             android:process=":ui"
-            android:theme="@style/Theme.AppCompat.DayNight.Dialog">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.games.PLAY_GAMES_UPGRADE" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -515,7 +515,7 @@
             android:name="org.microg.gms.ui.AskPushPermission"
             android:excludeFromRecents="true"
             android:process=":ui"
-            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert.NoActionBar" />
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name="org.microg.gms.ui.GoogleMoreFragment$AsActivity"
