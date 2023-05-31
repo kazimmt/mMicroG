@@ -89,7 +89,7 @@ public class SwitchBar extends LinearLayout implements CompoundButton.OnCheckedC
 
         addOnSwitchChangeListener(new OnSwitchChangeListener() {
             @Override
-            public void onSwitchChanged(SwitchCompat switchView, boolean isChecked) {
+            public void onSwitchChanged(SwitchMaterial switchView, boolean isChecked) {
                 setTextViewLabel(isChecked);
             }
         });
