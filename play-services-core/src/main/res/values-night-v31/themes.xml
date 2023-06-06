@@ -1,0 +1,14 @@
+<resources>
+    <style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight"/>
+    <style name="Theme.Material3.DynamicColors.DayNight" parent="Theme.Material3.DynamicColors.Dark"/>
+    <style name="Theme.Material3.DynamicColors.Dark" parent="Theme.Material3.Dark">
+        <item name="colorPrimary">@android:color/system_accent1_600</item>
+        <item name="colorPrimaryDark">@android:color/system_neutral1_900</item>
+        <item name="colorOnPrimary">@android:color/system_accent1_0</item>
+        <item name="colorSecondary">@android:color/system_accent2_600</item>
+        <item name="colorOnSecondary">@android:color/system_accent2_0</item>
+        <item name="colorTertiary">@android:color/system_accent3_600</item>
+        <item name="colorOnTertiary">@android:color/system_accent3_0</item>
+        <item name="colorOnBackground">@android:color/system_neutral1_900</item>
+    </style>
+</resources>

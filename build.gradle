@@ -19,6 +19,7 @@ buildscript {
     ext.coreVersion = '1.9.0'
     ext.fragmentVersion = '1.5.5'
     ext.lifecycleVersion = '2.6.1'
+    ext.materialVersion = '1.7.0'
     ext.loaderVersion = '1.1.0'
     ext.mediarouterVersion = '1.4.0'
     ext.multidexVersion = '2.0.1'
@@ -35,8 +36,8 @@ buildscript {
 
     ext.androidBuildVersionTools = '33.0.2'
 
-    ext.androidMinSdk = 29
-    ext.androidTargetSdk = 30
+    ext.androidMinSdk = 23
+    ext.androidTargetSdk = 33
     ext.androidCompileSdk = 33
 
     ext.localProperties = new Properties()

@@ -64,6 +64,7 @@ dependencies {
     implementation "androidx.mediarouter:mediarouter:$mediarouterVersion"
     implementation "androidx.preference:preference-ktx:$preferenceVersion"
     implementation "androidx.webkit:webkit:$webkitVersion"
+    implementation "com.google.android.material:material:$materialVersion"
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
