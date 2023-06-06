@@ -75,8 +75,8 @@
                 android:paddingLeft="38dp"
                 android:paddingRight="38dp"
                 android:textAllCaps="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="16sp"/>
+                android:textAppearance="@style/TextAppearance.M3.Sys.Typescale.BodyLarge"
+                android:textColor="?attr/colorOnSurface"/>
 
             <Button
                 android:id="@+id/next_button"
@@ -89,8 +89,8 @@
                 android:paddingLeft="38dp"
                 android:paddingRight="38dp"
                 android:textAllCaps="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="16sp"/>
+                android:textAppearance="@style/TextAppearance.M3.Sys.Typescale.BodyLarge"
+                android:textColor="?attr/colorOnSurface"/>
         </RelativeLayout>
     </LinearLayout>
 
