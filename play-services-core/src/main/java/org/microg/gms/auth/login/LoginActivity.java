@@ -21,6 +21,7 @@ import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -38,6 +39,8 @@ import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import androidx.webkit.WebViewFeature;
+import androidx.webkit.WebSettingsCompat;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -211,6 +214,21 @@ public class LoginActivity extends AssistantActivity {
         webView.setLayoutParams(new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         webView.setBackgroundColor(Color.TRANSPARENT);
+
+        if (SDK_INT < 32) {
+            if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+                boolean systemIsDark =
+                        (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) ==
+                                Configuration.UI_MODE_NIGHT_YES;
+                WebSettingsCompat.setForceDark(webView.getSettings(),
+                        systemIsDark ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
+            }
+        }
+        else {
+            if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+                WebSettingsCompat.setAlgorithmicDarkeningAllowed(webView.getSettings(), true);
+            }
+        }
         prepareWebViewSettings(context, webView.getSettings());
         return webView;
     }
