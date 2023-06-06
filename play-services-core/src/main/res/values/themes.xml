@@ -27,7 +27,7 @@
         <item name="colorPrimary">@color/login_blue_theme_primary</item>
         <item name="colorPrimaryDark">@color/login_blue_theme_primary_dark</item>
         <item name="colorAccent">@color/login_blue_theme_accent</item>
-        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
 
