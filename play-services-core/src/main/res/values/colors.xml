@@ -19,4 +19,7 @@
     <color name="login_blue_theme_primary_dark">#ff3367d6</color>
     <color name="login_blue_theme_accent">#ffffab40</color>
     <color name="m3_theme_primary_dark">#ff9a82db</color>
+
+    <color name="dialog_border_color">#88CCCCCC</color>
+    <color name="material_error">#fff44336</color>
 </resources>
