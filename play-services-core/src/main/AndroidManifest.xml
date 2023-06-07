@@ -20,15 +20,17 @@
     <permission
         android:name="${basePackageName}.android.c2dm.permission.RECEIVE"
         android:label="@string/perm_c2dm_receive_label"
+        android:permissionGroup="android.permission-group.NETWORK"
         android:protectionLevel="normal" />
     <permission
         android:name="${basePackageName}.android.c2dm.permission.SEND"
         android:label="@string/perm_c2dm_send_label"
+        android:permissionGroup="android.permission-group.NETWORK"
         android:protectionLevel="privileged|signature" />
     <permission
         android:name="${basePackageName}.android.gtalkservice.permission.GTALK_SERVICE"
         android:label="@string/perm_gtalk_svc_label"
-        android:permissionGroup="android.permission-group.SMS"
+        android:permissionGroup="android.permission-group.MESSAGES"
         android:protectionLevel="signature" />
 
     <permission-tree
