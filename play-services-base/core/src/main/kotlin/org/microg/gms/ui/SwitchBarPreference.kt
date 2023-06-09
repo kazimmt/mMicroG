@@ -6,8 +6,10 @@
 package org.microg.gms.ui
 
 import android.content.Context
+import android.content.res.Configuration
 import android.util.AttributeSet
 import androidx.appcompat.widget.SwitchCompat
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.TwoStatePreference
 import org.microg.gms.base.core.R
@@ -37,10 +39,19 @@ class SwitchBarPreference : TwoStatePreference {
             }
             this.isChecked = isChecked
         }
+
+        val systemTheme = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        var switchBarColor = androidx.appcompat.R.attr.colorButtonNormal
+        var switchBarColorDisabled = androidx.appcompat.R.attr.colorControlHighlight
+        if (AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES && systemTheme == Configuration.UI_MODE_NIGHT_NO) {
+            switchBarColor = androidx.appcompat.R.attr.colorControlNormal
+            switchBarColorDisabled = androidx.appcompat.R.attr.colorControlNormal
+        }
         holder.itemView.setBackgroundColorAttribute(when {
             isChecked -> androidx.appcompat.R.attr.colorControlActivated
-            isEnabled -> androidx.appcompat.R.attr.colorButtonNormal
-            else -> androidx.appcompat.R.attr.colorControlHighlight
+            isEnabled -> switchBarColor
+
+            else -> switchBarColorDisabled
         })
     }
 }
