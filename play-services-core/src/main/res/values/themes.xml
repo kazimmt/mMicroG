@@ -16,6 +16,11 @@
 
 <resources>
 
+    <style name="Theme.AppCompat.DayNight" parent="Theme.AppCompat.Light">
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
     <style name="Theme.LoginBlue" parent="Theme.LoginBlue.Base" />
 
     <style name="Theme.LoginBlue.Base" parent="Theme.AppCompat.DayNight.NoActionBar">
