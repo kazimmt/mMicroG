@@ -33,7 +33,10 @@ import org.microg.gms.base.core.BuildConfig;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static org.microg.gms.common.Constants.GMS_PACKAGE_NAME;
@@ -48,7 +51,7 @@ public class PackageUtils {
     private static final String GOOGLE_LEGACY_KEY = "58e1c4133f7441ec3d2c270270a14802da47ba0e"; // Seems to be no longer used.
     private static final String[] GOOGLE_PRIMARY_KEYS = {GOOGLE_PLATFORM_KEY, GOOGLE_PLATFORM_KEY_2, GOOGLE_APP_KEY};
 
-    public static final Map<String, String> KNOWN_GOOGLE_PACKAGES;
+    private static final Map<String, String> KNOWN_GOOGLE_PACKAGES;
 
     static {
         KNOWN_GOOGLE_PACKAGES = new HashMap<>();
@@ -59,7 +62,6 @@ public class PackageUtils {
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.apps.tycho", "01b844184e360686aa98b48eb16e05c76d4a72ad");
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.contacts", "ee3e2b5d95365c5a1ccc2d8dfe48d94eb33b3ebe");
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.wearable.app", "a197f9212f2fed64f0ff9c2a4edf24b9c8801c8c");
-        KNOWN_GOOGLE_PACKAGES.put("com.google.android.apps.youtube", "24bb24c05e47e0aefa68a58a766179d9b613a600");
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.apps.youtube.music", "afb0fed5eeaebdd86f56a97742f4b6b33ef59875");
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.vr.home", "fc1edc68f7e3e4963c998e95fc38f3de8d1bfc96");
         KNOWN_GOOGLE_PACKAGES.put("com.google.vr.cyclops", "188c5ca3863fa121216157a5baa80755ceda70ab");
@@ -143,13 +145,7 @@ public class PackageUtils {
                 String digest = sha1sum(sig.toByteArray());
                 if (digest != null) {
                     // spoof or use real one
-                    String spoofedStringSignature = Objects.requireNonNull(
-                            PackageSpoofUtils.spoofStringSignature(packageManager, packageName, digest)
-                    );
-
-                    if (!spoofedStringSignature.equals(digest)) return spoofedStringSignature;
-
-                    return PackageSpoofUtils.spoofKnownPackageStringSignature(packageName, digest);
+                    return PackageSpoofUtils.spoofStringSignature(packageManager, packageName, digest);
                 }
             }
         }

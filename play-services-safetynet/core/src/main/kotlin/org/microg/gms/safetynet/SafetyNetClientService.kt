@@ -16,7 +16,7 @@ import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-//import com.google.android.gms.common.BuildConfig
+import com.google.android.gms.common.BuildConfig
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.common.internal.GetServiceRequest
 import com.google.android.gms.common.internal.IGmsCallbacks
@@ -34,7 +34,6 @@ import org.microg.gms.common.GmsService
 import org.microg.gms.common.PackageUtils
 import org.microg.gms.droidguard.core.DroidGuardPreferences
 import org.microg.gms.droidguard.core.DroidGuardResultCreator
-import org.microg.gms.safetynet.core.BuildConfig
 import org.microg.gms.settings.SettingsContract
 import org.microg.gms.settings.SettingsContract.CheckIn.getContentUri
 import org.microg.gms.settings.SettingsContract.getSettings
