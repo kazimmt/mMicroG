@@ -81,7 +81,7 @@ allprojects {
 
     group = 'org.microg.gms'
     ext.appVersionCode = 232512000
-    ext.baseVersion = ext.appVersionCode.toString()[1..2] + '.' + ext.appVersionCode.toString()[3..4] + '.' + ext.appVersionCode.toString()[5..6]
+    ext.baseVersion = ext.appVersionCode.toString()[0..1] + '.' + ext.appVersionCode.toString()[2..3] + '.' + ext.appVersionCode.toString()[4..5]
     version = "0.2.28."+ext.baseVersion.replaceAll("\\.", "")
     ext.isReleaseVersion = false
 }
