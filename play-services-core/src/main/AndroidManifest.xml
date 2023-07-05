@@ -116,7 +116,7 @@
         android:icon="@mipmap/ic_core_service_app"
         android:label="@string/gms_app_name"
         android:multiArch="true"
-        android:theme="@style/Theme.AppCompat.DayNight">
+        android:theme="@style/AppTheme">
 
         <library android:name="${basePackageName}.android.gms" />
 
