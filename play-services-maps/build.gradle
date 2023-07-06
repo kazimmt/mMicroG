@@ -29,7 +29,7 @@ description = 'microG implementation of play-services-maps'
 
 dependencies {
     // Dependencies from play-services-maps:18.1.0
-    api 'androidx.fragment:fragment:1.5.7'
+    api 'androidx.fragment:fragment:1.6.0'
     api project(":play-services-base")
     api project(":play-services-basement")
 }

@@ -22,14 +22,14 @@ buildscript {
     ext.loaderVersion = '1.1.0'
     ext.mediarouterVersion = '1.4.0'
     ext.multidexVersion = '2.0.1'
-    ext.navigationVersion = '2.5.3'
+    ext.navigationVersion = '2.6.0'
     ext.preferenceVersion = '1.2.0'
     ext.recyclerviewVersion = '1.2.0'
     ext.webkitVersion = '1.7.0'
 
     ext.slf4jVersion = '1.7.36'
     ext.volleyVersion = '1.2.1'
-    ext.wireVersion = '4.7.0'
+    ext.wireVersion = '4.7.2'
 
     ext.androidBuildGradleVersion = '7.4.2'
 
