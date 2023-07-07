@@ -59,7 +59,7 @@ import org.microg.gms.checkin.CheckinManager;
 import org.microg.gms.checkin.LastCheckinInfo;
 import org.microg.gms.common.HttpFormClient;
 import org.microg.gms.common.Utils;
-import org.microg.gms.droidguard.core.DroidGuardResultCreator;
+//import org.microg.gms.droidguard.core.DroidGuardResultCreator;
 import org.microg.gms.people.PeopleManager;
 import org.microg.gms.profile.Build;
 import org.microg.gms.profile.ProfileManager;
@@ -99,8 +99,8 @@ public class LoginActivity extends AssistantActivity {
     private static final String MAGIC_USER_AGENT = " MinuteMaid";
     private static final String COOKIE_OAUTH_TOKEN = "oauth_token";
 
-    private final FidoHandler fidoHandler = new FidoHandler(this);
-    private final DroidGuardHandler dgHandler = new DroidGuardHandler(this);
+//    private final FidoHandler fidoHandler = new FidoHandler(this);
+//    private final DroidGuardHandler dgHandler = new DroidGuardHandler(this);
 
     private WebView webView;
     private String accountType;
@@ -436,11 +436,11 @@ public class LoginActivity extends AssistantActivity {
             Log.d(TAG, "JSBridge: backupSyncOptIn");
         }
 
-        @JavascriptInterface
-        public final void cancelFido2SignRequest() {
-            Log.d(TAG, "JSBridge: cancelFido2SignRequest");
-            fidoHandler.cancel();
-        }
+//        @JavascriptInterface
+//        public final void cancelFido2SignRequest() {
+//            Log.d(TAG, "JSBridge: cancelFido2SignRequest");
+//            fidoHandler.cancel();
+//        }
 
         @JavascriptInterface
         public void clearOldLoginAttempts() {
@@ -510,22 +510,22 @@ public class LoginActivity extends AssistantActivity {
             return 1;
         }
 
-        @JavascriptInterface
-        public final void getDroidGuardResult(String s) {
-            Log.d(TAG, "JSBridge: getDroidGuardResult");
-            try {
-                JSONArray array = new JSONArray(s);
-                StringBuilder sb = new StringBuilder();
-                sb.append(getAndroidId()).append(":").append(getBuildVersionSdk()).append(":").append(getPlayServicesVersionCode());
-                for (int i = 0; i < array.length(); i++) {
-                    sb.append(":").append(array.getString(i));
-                }
-                String dg = Base64.encodeToString(MessageDigest.getInstance("SHA1").digest(sb.toString().getBytes()), 0);
-                dgHandler.start(dg);
-            } catch (Exception e) {
-                // Ignore
-            }
-        }
+//        @JavascriptInterface
+//        public final void getDroidGuardResult(String s) {
+//            Log.d(TAG, "JSBridge: getDroidGuardResult");
+//            try {
+//                JSONArray array = new JSONArray(s);
+//                StringBuilder sb = new StringBuilder();
+//                sb.append(getAndroidId()).append(":").append(getBuildVersionSdk()).append(":").append(getPlayServicesVersionCode());
+//                for (int i = 0; i < array.length(); i++) {
+//                    sb.append(":").append(array.getString(i));
+//                }
+//                String dg = Base64.encodeToString(MessageDigest.getInstance("SHA1").digest(sb.toString().getBytes()), 0);
+//                dgHandler.start(dg);
+//            } catch (Exception e) {
+//                // Ignore
+//            }
+//        }
 
         @JavascriptInterface
         public final String getFactoryResetChallenges() {
@@ -592,11 +592,11 @@ public class LoginActivity extends AssistantActivity {
             Log.d(TAG, "JSBridge: notifyOnTermsOfServiceAccepted");
         }
 
-        @JavascriptInterface
-        public final void sendFido2SkUiEvent(String event) {
-            Log.d(TAG, "JSBridge: sendFido2SkUiEvent");
-            fidoHandler.onEvent(event);
-        }
+//        @JavascriptInterface
+//        public final void sendFido2SkUiEvent(String event) {
+//            Log.d(TAG, "JSBridge: sendFido2SkUiEvent");
+//            fidoHandler.onEvent(event);
+//        }
 
         @JavascriptInterface
         public final void setAccountIdentifier(String accountName) {
@@ -667,11 +667,11 @@ public class LoginActivity extends AssistantActivity {
             Log.d(TAG, "JSBridge: startAfw");
         }
 
-        @JavascriptInterface
-        public final void startFido2SignRequest(String request) {
-            Log.d(TAG, "JSBridge: startFido2SignRequest");
-            fidoHandler.startSignRequest(request);
-        }
+//        @JavascriptInterface
+//        public final void startFido2SignRequest(String request) {
+//            Log.d(TAG, "JSBridge: startFido2SignRequest");
+//            fidoHandler.startSignRequest(request);
+//        }
 
     }
 }

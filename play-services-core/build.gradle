@@ -18,45 +18,13 @@ dependencies {
     implementation "com.squareup.wire:wire-runtime:$wireVersion"
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    implementation project(':firebase-dynamic-links-api')
-    implementation project(':firebase-auth-core')
-    implementation project(':play-services-base-core')
-    implementation project(':play-services-cast-core')
-    implementation project(':play-services-cast-framework-core')
-    implementation project(':play-services-conscrypt-provider-core')
-    implementation project(':play-services-cronet-core')
-    implementation project(':play-services-droidguard-core')
-    implementation project(':play-services-fido-core')
-    implementation project(':play-services-gmscompliance-core')
-    implementation project(':play-services-location-core')
-    withNearbyImplementation project(':play-services-nearby-core')
-    implementation project(':play-services-oss-licenses-core')
-    implementation project(':play-services-pay-core')
-    implementation project(':play-services-recaptcha-core')
-    implementation project(':play-services-safetynet-core')
-    implementation project(':play-services-tapandpay-core')
-    implementation project(':play-services-vision-core')
-    implementation project(':play-services-wearable-core')
-
-    implementation project(':play-services-core-proto')
-
-    implementation project(':play-services-core:microg-ui-tools') // deprecated
-    implementation project(':play-services-api')
-
-    implementation project(':play-services-appinvite')
-    implementation project(':play-services-auth-base')
-    implementation project(':play-services-auth')
-    implementation project(':play-services-clearcut')
-    implementation project(':play-services-drive')
-    implementation project(':play-services-maps')
-    implementation project(':play-services-measurement-base')
-    implementation project(':play-services-places')
-    implementation project(':play-services-recaptcha')
-    implementation project(':play-services-safetynet')
-    implementation project(':play-services-tasks-ktx')
+    includeProjects.each { projectName ->
+        implementation project(projectName)
+    }
 
     withMapboxImplementation project(':play-services-maps-core-mapbox')
     withVtmImplementation project(':play-services-maps-core-vtm')
+    withNearbyImplementation project(':play-services-nearby-core')
 
     // AndroidX UI
     implementation "androidx.multidex:multidex:$multidexVersion"
@@ -92,13 +60,6 @@ android {
 
         multiDexEnabled true
         multiDexKeepProguard file('multidex-keep.pro')
-
-        buildConfigField "String", "SAFETYNET_KEY", "\"${localProperties.get("safetynet.key", "")}\""
-        buildConfigField "String", "RECAPTCHA_SITE_KEY", "\"${localProperties.get("recaptcha.siteKey", "")}\""
-        buildConfigField "String", "RECAPTCHA_SECRET", "\"${localProperties.get("recaptcha.secret", "")}\""
-        buildConfigField "String", "RECAPTCHA_ENTERPRISE_PROJECT_ID", "\"${localProperties.get("recaptchaEnterpreise.projectId", "")}\""
-        buildConfigField "String", "RECAPTCHA_ENTERPRISE_SITE_KEY", "\"${localProperties.get("recaptchaEnterpreise.siteKey", "")}\""
-        buildConfigField "String", "RECAPTCHA_ENTERPRISE_API_KEY", "\"${localProperties.get("recaptchaEnterpreise.apiKey", "")}\""
 
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"

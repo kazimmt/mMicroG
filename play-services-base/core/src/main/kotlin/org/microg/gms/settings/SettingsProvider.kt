@@ -64,11 +64,11 @@ class SettingsProvider : ContentProvider() {
         CheckIn.getContentUri(context!!) -> queryCheckIn(projection ?: CheckIn.PROJECTION)
         Gcm.getContentUri(context!!) -> queryGcm(projection ?: Gcm.PROJECTION)
         Auth.getContentUri(context!!) -> queryAuth(projection ?: Auth.PROJECTION)
-        Exposure.getContentUri(context!!) -> queryExposure(projection ?: Exposure.PROJECTION)
-        SafetyNet.getContentUri(context!!) -> querySafetyNet(projection ?: SafetyNet.PROJECTION)
-        DroidGuard.getContentUri(context!!) -> queryDroidGuard(projection ?: DroidGuard.PROJECTION)
+//        Exposure.getContentUri(context!!) -> queryExposure(projection ?: Exposure.PROJECTION)
+//        SafetyNet.getContentUri(context!!) -> querySafetyNet(projection ?: SafetyNet.PROJECTION)
+//        DroidGuard.getContentUri(context!!) -> queryDroidGuard(projection ?: DroidGuard.PROJECTION)
         Profile.getContentUri(context!!) -> queryProfile(projection ?: Profile.PROJECTION)
-        Location.getContentUri(context!!) -> queryLocation(projection ?: Location.PROJECTION)
+//        Location.getContentUri(context!!) -> queryLocation(projection ?: Location.PROJECTION)
         else -> null
     }
 
@@ -84,11 +84,7 @@ class SettingsProvider : ContentProvider() {
             CheckIn.getContentUri(context!!) -> updateCheckIn(values)
             Gcm.getContentUri(context!!) -> updateGcm(values)
             Auth.getContentUri(context!!) -> updateAuth(values)
-            Exposure.getContentUri(context!!) -> updateExposure(values)
-            SafetyNet.getContentUri(context!!) -> updateSafetyNet(values)
-            DroidGuard.getContentUri(context!!) -> updateDroidGuard(values)
             Profile.getContentUri(context!!) -> updateProfile(values)
-            Location.getContentUri(context!!) -> updateLocation(values)
             else -> return 0
         }
         return 1
@@ -291,28 +287,28 @@ class SettingsProvider : ContentProvider() {
         editor.apply()
     }
 
-    private fun queryLocation(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
-        when (key) {
-            Location.WIFI_MLS -> getSettingsBoolean(key, true)
-            Location.WIFI_MOVING -> getSettingsBoolean(key, true)
-            Location.CELL_MLS -> getSettingsBoolean(key, true)
-            else -> throw IllegalArgumentException("Unknown key: $key")
-        }
-    }
-
-    private fun updateLocation(values: ContentValues) {
-        if (values.size() == 0) return
-        val editor = preferences.edit()
-        values.valueSet().forEach { (key, value) ->
-            when (key) {
-                Location.WIFI_MLS -> editor.putBoolean(key, value as Boolean)
-                Location.WIFI_MOVING -> editor.putBoolean(key, value as Boolean)
-                Location.CELL_MLS -> editor.putBoolean(key, value as Boolean)
-                else -> throw IllegalArgumentException("Unknown key: $key")
-            }
-        }
-        editor.apply()
-    }
+//    private fun queryLocation(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
+//        when (key) {
+//            Location.WIFI_MLS -> getSettingsBoolean(key, true)
+//            Location.WIFI_MOVING -> getSettingsBoolean(key, true)
+//            Location.CELL_MLS -> getSettingsBoolean(key, true)
+//            else -> throw IllegalArgumentException("Unknown key: $key")
+//        }
+//    }
+//
+//    private fun updateLocation(values: ContentValues) {
+//        if (values.size() == 0) return
+//        val editor = preferences.edit()
+//        values.valueSet().forEach { (key, value) ->
+//            when (key) {
+//                Location.WIFI_MLS -> editor.putBoolean(key, value as Boolean)
+//                Location.WIFI_MOVING -> editor.putBoolean(key, value as Boolean)
+//                Location.CELL_MLS -> editor.putBoolean(key, value as Boolean)
+//                else -> throw IllegalArgumentException("Unknown key: $key")
+//            }
+//        }
+//        editor.apply()
+//    }
 
     private fun MatrixCursor.addRow(
         p: Array<out String>,
@@ -345,8 +341,8 @@ class SettingsProvider : ContentProvider() {
     }
 
     private fun getSettingsString(key: String, def: String? = null): String? = listOf(preferences, systemDefaultPreferences).getString(key, def)
-    private fun getSettingsInt(key: String, def: Int): Int = listOf(preferences, systemDefaultPreferences).getInt(key, def)
-    private fun getSettingsLong(key: String, def: Long): Long = listOf(preferences, systemDefaultPreferences).getLong(key, def)
+//    private fun getSettingsInt(key: String, def: Int): Int = listOf(preferences, systemDefaultPreferences).getInt(key, def)
+//    private fun getSettingsLong(key: String, def: Long): Long = listOf(preferences, systemDefaultPreferences).getLong(key, def)
 
     private fun List<SharedPreferences?>.getString(key: String, def: String?): String? = foldRight(def) { preferences, defValue -> preferences?.getString(key, defValue) ?: defValue }
     private fun List<SharedPreferences?>.getInt(key: String, def: Int): Int = foldRight(def) { preferences, defValue -> preferences?.getInt(key, defValue) ?: defValue }

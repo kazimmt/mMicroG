@@ -23,7 +23,7 @@ import okio.ByteString.Companion.of
 import org.microg.gms.checkin.LastCheckinInfo
 import org.microg.gms.common.Constants
 import org.microg.gms.common.PackageUtils
-import org.microg.gms.droidguard.core.DroidGuardResultCreator
+//import org.microg.gms.droidguard.core.DroidGuardResultCreator
 import org.microg.gms.gcm.GcmConstants
 import org.microg.gms.gcm.GcmDatabase
 import org.microg.gms.gcm.RegisterRequest
@@ -66,17 +66,17 @@ class AppCertManager(private val context: Context) {
                 val lastCheckinInfo = LastCheckinInfo.read(context)
                 val androidId = lastCheckinInfo.androidId
                 val sessionId = Random.nextLong()
-                val data = hashMapOf(
-                        "dg_androidId" to androidId.toString(16),
-                        "dg_session" to sessionId.toString(16),
-                        "dg_gmsCoreVersion" to BuildConfig.VERSION_CODE.toString(),
-                        "dg_sdkVersion" to Build.VERSION.SDK_INT.toString()
-                )
-                val droidGuardResult = try {
-                    DroidGuardResultCreator.getResults(context, "devicekey", data)
-                } catch (e: Exception) {
-                    null
-                }
+//                val data = hashMapOf(
+//                        "dg_androidId" to androidId.toString(16),
+//                        "dg_session" to sessionId.toString(16),
+//                        "dg_gmsCoreVersion" to BuildConfig.VERSION_CODE.toString(),
+//                        "dg_sdkVersion" to Build.VERSION.SDK_INT.toString()
+//                )
+//                val droidGuardResult = try {
+//                    DroidGuardResultCreator.getResults(context, "devicekey", data)
+//                } catch (e: Exception) {
+//                    null
+//                }
                 val token = completeRegisterRequest(context, GcmDatabase(context), RegisterRequest().build(context)
                         .checkin(lastCheckinInfo)
                         .app("com.google.android.gms", Constants.GMS_PACKAGE_SIGNATURE_SHA1, BuildConfig.VERSION_CODE)
@@ -88,7 +88,7 @@ class AppCertManager(private val context: Context) {
                         .extraParam("scope", REGISTER_SCOPE))
                         .getString(GcmConstants.EXTRA_REGISTRATION_ID)
                 val request = DeviceKeyRequest(
-                        droidGuardResult = droidGuardResult,
+//                        droidGuardResult = droidGuardResult,
                         androidId = lastCheckinInfo.androidId,
                         sessionId = sessionId,
                         versionInfo = DeviceKeyRequest.VersionInfo(Build.VERSION.SDK_INT, BuildConfig.VERSION_CODE),
