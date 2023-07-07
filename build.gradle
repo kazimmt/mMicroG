@@ -40,6 +40,21 @@ buildscript {
     ext.androidTargetSdk = 33
     ext.androidCompileSdk = 33
 
+    ext.includeProjects = [
+            ':play-services-base-core',
+            ':play-services-cast-core',
+            ':play-services-cast-framework-core',
+            ':play-services-conscrypt-provider-core',
+            ':play-services-core-proto', // deprecated
+            ':play-services-core:microg-ui-tools',
+            ':play-services-api',
+            ':play-services-tasks-ktx',
+            ':play-services-auth'
+    ]
+
+    ext.excludes = [
+            '**/AppMeasurementDynamiteService.kt'
+    ]
     ext.localProperties = new Properties()
 
     try {
