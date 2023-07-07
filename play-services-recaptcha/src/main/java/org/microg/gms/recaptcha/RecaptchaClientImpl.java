@@ -72,7 +72,7 @@ public class RecaptchaClientImpl extends GoogleApi<Api.ApiOptions.NoOptions> imp
             ExecuteParams params = new ExecuteParams();
             params.handle = handle;
             params.action = action;
-            params.version = "23.21.15";
+            params.version = BuildConfig.VERSION_NAME;
             client.execute(new IExecuteCallback.Stub() {
                 @Override
                 public void onData(Status status, RecaptchaResultData data) throws RemoteException {

@@ -35,8 +35,8 @@ android {
     buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
-        versionName "23.21.15"
-        versionCode 232115000
+        versionName baseVersion
+        versionCode appVersionCode
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
         buildConfigField("String", "VERSION_NAME", "\"${defaultConfig.versionName}\"")

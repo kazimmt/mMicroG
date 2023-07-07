@@ -15,6 +15,7 @@ android {
         versionName version
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
+        buildConfigField("String", "VERSION_NAME", "\"${baseVersion}\"")
     }
 
     compileOptions {
