@@ -35,6 +35,6 @@ dependencies {
     api project(':play-services-auth-base')
     api project(':play-services-base')
     api project(':play-services-basement')
-    api project(':play-services-fido')
+//    api project(':play-services-fido')
     api project(':play-services-tasks')
 }

@@ -48,7 +48,7 @@ buildscript {
             ':play-services-core-proto', // deprecated
             ':play-services-core:microg-ui-tools',
             ':play-services-api',
-            ':play-services-tasks-ktx',
+//            ':play-services-tasks-ktx',
             ':play-services-auth'
     ]
 
