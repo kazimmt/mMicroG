@@ -22,9 +22,9 @@ dependencies {
         implementation project(projectName)
     }
 
-    withMapboxImplementation project(':play-services-maps-core-mapbox')
+//    withMapboxImplementation project(':play-services-maps-core-mapbox')
     withVtmImplementation project(':play-services-maps-core-vtm')
-    withNearbyImplementation project(':play-services-nearby-core')
+//    withNearbyImplementation project(':play-services-nearby-core')
 
     // AndroidX UI
     implementation "androidx.multidex:multidex:$multidexVersion"
