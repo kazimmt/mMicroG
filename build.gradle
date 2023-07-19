@@ -19,6 +19,7 @@ buildscript {
     ext.coreVersion = '1.9.0'
     ext.fragmentVersion = '1.5.5'
     ext.lifecycleVersion = '2.6.1'
+    ext.materialVersion = '1.9.0'
     ext.loaderVersion = '1.1.0'
     ext.mediarouterVersion = '1.4.0'
     ext.multidexVersion = '2.0.1'
@@ -35,10 +36,25 @@ buildscript {
 
     ext.androidBuildVersionTools = '33.0.2'
 
-    ext.androidMinSdk = 29
-    ext.androidTargetSdk = 30
+    ext.androidMinSdk = 23
+    ext.androidTargetSdk = 33
     ext.androidCompileSdk = 33
 
+    ext.includeProjects = [
+            ':play-services-base-core',
+            ':play-services-cast-core',
+            ':play-services-cast-framework-core',
+            ':play-services-conscrypt-provider-core',
+            ':play-services-core-proto', // deprecated
+            ':play-services-core:microg-ui-tools',
+            ':play-services-api',
+//            ':play-services-tasks-ktx',
+            ':play-services-auth'
+    ]
+
+    ext.excludes = [
+            '**/AppMeasurementDynamiteService.kt'
+    ]
     ext.localProperties = new Properties()
 
     try {
@@ -64,8 +80,9 @@ allprojects {
     apply plugin: 'idea'
 
     group = 'org.microg.gms'
-    version = "0.2.28.232512"
-    ext.appVersionCode = 232512000
+    ext.appVersionCode = 232516000
+    ext.baseVersion = ext.appVersionCode.toString()[0..1] + '.' + ext.appVersionCode.toString()[2..3] + '.' + ext.appVersionCode.toString()[4..5]
+    version = "0.2.28."+ext.baseVersion.replaceAll("\\.", "")
     ext.isReleaseVersion = false
 }
 

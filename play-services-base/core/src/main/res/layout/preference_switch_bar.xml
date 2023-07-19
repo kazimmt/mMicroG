@@ -14,6 +14,7 @@
     android:paddingLeft="?attr/listPreferredItemPaddingLeft"
     android:paddingEnd="?attr/listPreferredItemPaddingEnd"
     android:paddingRight="?attr/listPreferredItemPaddingRight"
+    android:background="@null"
     tools:background="?attr/colorControlActivated">
 
     <TextView
@@ -26,11 +27,11 @@
         android:maxLines="2"
         android:paddingStart="56dp"
         android:paddingLeft="56dp"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textColor="?android:attr/textColorPrimaryInverse"
+        android:textSize="20sp"
+        android:textAppearance="@style/TextAppearance.M3.Sys.Typescale.HeadlineSmall"
         tools:text="Enabled" />
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch_widget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

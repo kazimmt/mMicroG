@@ -142,6 +142,8 @@ internal object PackageSpoofUtils {
      */
     private fun getPackageMetadata(packageManager: PackageManager, packageName: String): Bundle? {
         return try {
+            // PackageManager.getPackageInfo() has been deprecated in targetSdkVersion 30+
+            // To solve this, add the QUERY_ALL_PACKAGES permission to AndroidManifest.xml
             packageManager
                 .getPackageInfo(packageName, PackageManager.GET_META_DATA)
                 ?.applicationInfo

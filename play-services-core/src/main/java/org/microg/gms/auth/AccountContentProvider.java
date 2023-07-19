@@ -66,7 +66,7 @@ public class AccountContentProvider extends ContentProvider {
                 Log.w(TAG, "Not granting extended access to " + Arrays.toString(packagesForUid)
                         + ", signature: " + PackageUtils.firstSignatureDigest(getContext(), packagesForUid[0]));
             if (getContext().checkCallingPermission(Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED)
-                throw new SecurityException("Access denied, missing GET_ACCOUNTS or EXTENDED_ACCESS permission");
+                    throw new SecurityException("Access denied, missing GET_ACCOUNTS or EXTENDED_ACCESS permission");
         }
         if (PROVIDER_METHOD_GET_ACCOUNTS.equals(method)) {
             Bundle result = new Bundle();

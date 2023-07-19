@@ -33,10 +33,7 @@ import org.microg.gms.base.core.BuildConfig;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static org.microg.gms.common.Constants.GMS_PACKAGE_NAME;
@@ -62,6 +59,7 @@ public class PackageUtils {
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.apps.tycho", "01b844184e360686aa98b48eb16e05c76d4a72ad");
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.contacts", "ee3e2b5d95365c5a1ccc2d8dfe48d94eb33b3ebe");
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.wearable.app", "a197f9212f2fed64f0ff9c2a4edf24b9c8801c8c");
+        KNOWN_GOOGLE_PACKAGES.put("com.google.android.apps.youtube", "24bb24c05e47e0aefa68a58a766179d9b613a600");
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.apps.youtube.music", "afb0fed5eeaebdd86f56a97742f4b6b33ef59875");
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.vr.home", "fc1edc68f7e3e4963c998e95fc38f3de8d1bfc96");
         KNOWN_GOOGLE_PACKAGES.put("com.google.vr.cyclops", "188c5ca3863fa121216157a5baa80755ceda70ab");
@@ -109,6 +107,7 @@ public class PackageUtils {
         String[] packagesForUid = context.getPackageManager().getPackagesForUid(Binder.getCallingUid());
         if (packagesForUid != null && packagesForUid.length != 0) {
             for (String packageName : packagesForUid) {
+                packageName = PackageSpoofUtils.spoofPackageName(context.getPackageManager(), packageName);
                 if (isGooglePackage(context, packageName) || GMS_PACKAGE_NAME.equals(packageName))
                     return true;
             }

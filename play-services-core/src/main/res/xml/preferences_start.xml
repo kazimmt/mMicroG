@@ -43,30 +43,31 @@
             android:icon="@drawable/ic_cloud_bell"
             android:key="pref_gcm"
             android:title="@string/service_name_mcs" />
-        <Preference
-            android:icon="@drawable/ic_certificate"
-            android:key="pref_snet"
-            android:title="@string/service_name_snet" />
-        <Preference
-            android:icon="@drawable/dots_horizontal"
-            android:key="pref_google_more"
-            android:title="@string/pref_more_settings"
-            app:isPreferenceVisible="false">
-            <intent
-                android:targetClass="org.microg.gms.ui.GoogleMoreFragment$AsActivity"
-                android:targetPackage="com.google.android.gms" />
-        </Preference>
+<!--        <Preference-->
+<!--            android:icon="@drawable/ic_certificate"-->
+<!--            android:key="pref_snet"-->
+<!--            android:title="@string/service_name_snet" />-->
+<!--        <Preference-->
+<!--            android:icon="@drawable/dots_horizontal"-->
+<!--            android:key="pref_google_more"-->
+<!--            android:title="@string/pref_more_settings"-->
+<!--            app:isPreferenceVisible="false">-->
+<!--            <intent-->
+<!--                android:targetClass="org.microg.gms.ui.GoogleMoreFragment$AsActivity"-->
+<!--                android:targetPackage="com.google.android.gms" />-->
+<!--        </Preference>-->
     </PreferenceCategory>
-    <PreferenceCategory android:layout="@layout/preference_category_no_label">
-        <Preference
-            android:icon="@drawable/ic_map_marker"
-            android:key="pref_location"
-            android:title="@string/service_name_location"/>
-        <Preference
-            android:key="pref_exposure"
-            android:title="@string/service_name_exposure"
-            app:isPreferenceVisible="false" />
-    </PreferenceCategory>
+<!--    <PreferenceCategory-->
+<!--        android:layout="@layout/preference_category_no_label">-->
+<!--    <Preference-->
+<!--        android:icon="@drawable/ic_map_marker"-->
+<!--        android:key="pref_location"-->
+<!--        android:title="@string/service_name_location"/>-->
+<!--        <Preference-->
+<!--            android:key="pref_exposure"-->
+<!--            android:title="@string/service_name_exposure"-->
+<!--            app:isPreferenceVisible="false" />-->
+<!--    </PreferenceCategory>-->
     <PreferenceCategory android:layout="@layout/preference_category_no_label">
         <Preference
             android:icon="@drawable/ic_info_outline"

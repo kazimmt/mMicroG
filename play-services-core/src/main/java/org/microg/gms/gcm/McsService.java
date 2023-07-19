@@ -38,6 +38,7 @@ import android.os.Parcelable;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.UserHandle;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -174,7 +175,7 @@ public class McsService extends Service implements Handler.Callback {
         super.onCreate();
         TriggerReceiver.register(this);
         database = new GcmDatabase(this);
-        heartbeatIntent = PendingIntent.getService(this, 0, new Intent(ACTION_HEARTBEAT, null, this, McsService.class), 0);
+        heartbeatIntent = PendingIntent.getService(this, 0, new Intent(ACTION_HEARTBEAT, null, this, McsService.class), PendingIntent.FLAG_IMMUTABLE);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         powerManager = (PowerManager) getSystemService(POWER_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission("android.permission.CHANGE_DEVICE_IDLE_TEMP_WHITELIST") == PackageManager.PERMISSION_GRANTED) {
@@ -265,7 +266,7 @@ public class McsService extends Service implements Handler.Callback {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
         long delay = getCurrentDelay();
         logd(context, "Scheduling reconnect in " + delay / 1000 + " seconds...");
-        PendingIntent pi = PendingIntent.getBroadcast(context, 1, new Intent(ACTION_RECONNECT, null, context, TriggerReceiver.class), 0);
+        PendingIntent pi = PendingIntent.getBroadcast(context, 1, new Intent(ACTION_RECONNECT, null, context, TriggerReceiver.class), PendingIntent.FLAG_IMMUTABLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + delay, pi);
         } else {
@@ -549,15 +550,17 @@ public class McsService extends Service implements Handler.Callback {
         intent.setAction(ACTION_C2DM_RECEIVE);
         intent.putExtra(EXTRA_FROM, msg.from);
         intent.putExtra(EXTRA_MESSAGE_ID, msg.id);
-        if (msg.persistent_id != null) {
-            intent.putExtra(EXTRA_MESSAGE_ID, msg.persistent_id);
+        if (msg.persistent_id != null) intent.putExtra(EXTRA_MESSAGE_ID, msg.persistent_id);
+        if (msg.token != null) intent.putExtra(EXTRA_COLLAPSE_KEY, msg.token);
+        if (msg.raw_data != null) {
+            intent.putExtra(EXTRA_RAWDATA_BASE64, Base64.encodeToString(msg.raw_data.toByteArray(), Base64.DEFAULT));
+            intent.putExtra(EXTRA_RAWDATA, msg.raw_data.toByteArray());
         }
         if (app.wakeForDelivery) {
             intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         } else {
             intent.addFlags(Intent.FLAG_EXCLUDE_STOPPED_PACKAGES);
         }
-        if (msg.token != null) intent.putExtra(EXTRA_COLLAPSE_KEY, msg.token);
         for (AppData appData : msg.app_data) {
             intent.putExtra(appData.key, appData.value_);
         }
