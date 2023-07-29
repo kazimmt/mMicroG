@@ -17,12 +17,12 @@ import android.preference.PreferenceManager
 import org.microg.gms.common.PackageUtils.warnIfNotMainProcess
 import org.microg.gms.settings.SettingsContract.Auth
 import org.microg.gms.settings.SettingsContract.CheckIn
-import org.microg.gms.settings.SettingsContract.DroidGuard
-import org.microg.gms.settings.SettingsContract.Exposure
+//import org.microg.gms.settings.SettingsContract.DroidGuard
+//import org.microg.gms.settings.SettingsContract.Exposure
 import org.microg.gms.settings.SettingsContract.Gcm
-import org.microg.gms.settings.SettingsContract.Location
+//import org.microg.gms.settings.SettingsContract.Location
 import org.microg.gms.settings.SettingsContract.Profile
-import org.microg.gms.settings.SettingsContract.SafetyNet
+//import org.microg.gms.settings.SettingsContract.SafetyNet
 import org.microg.gms.settings.SettingsContract.getAuthority
 import java.io.File
 
@@ -203,68 +203,68 @@ class SettingsProvider : ContentProvider() {
         editor.apply()
     }
 
-    private fun queryExposure(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
-        when (key) {
-            Exposure.SCANNER_ENABLED -> getSettingsBoolean(key, false)
-            Exposure.LAST_CLEANUP -> preferences.getLong(key, 0L)
-            else -> throw IllegalArgumentException("Unknown key: $key")
-        }
-    }
-
-    private fun updateExposure(values: ContentValues) {
-        if (values.size() == 0) return
-        val editor = preferences.edit()
-        values.valueSet().forEach { (key, value) ->
-            when (key) {
-                Exposure.SCANNER_ENABLED -> editor.putBoolean(key, value as Boolean)
-                Exposure.LAST_CLEANUP -> editor.putLong(key, value as Long)
-                else -> throw IllegalArgumentException("Unknown key: $key")
-            }
-        }
-        editor.apply()
-    }
-
-    private fun querySafetyNet(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
-        when (key) {
-            SafetyNet.ENABLED -> getSettingsBoolean(key, false)
-            else -> throw IllegalArgumentException("Unknown key: $key")
-        }
-    }
-
-    private fun updateSafetyNet(values: ContentValues) {
-        if (values.size() == 0) return
-        val editor = preferences.edit()
-        values.valueSet().forEach { (key, value) ->
-            when (key) {
-                SafetyNet.ENABLED -> editor.putBoolean(key, value as Boolean)
-                else -> throw IllegalArgumentException("Unknown key: $key")
-            }
-        }
-        editor.apply()
-    }
-
-    private fun queryDroidGuard(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
-        when (key) {
-            DroidGuard.ENABLED -> getSettingsBoolean(key, false)
-            DroidGuard.MODE -> getSettingsString(key)
-            DroidGuard.NETWORK_SERVER_URL -> getSettingsString(key)
-            else -> throw IllegalArgumentException("Unknown key: $key")
-        }
-    }
-
-    private fun updateDroidGuard(values: ContentValues) {
-        if (values.size() == 0) return
-        val editor = preferences.edit()
-        values.valueSet().forEach { (key, value) ->
-            when (key) {
-                DroidGuard.ENABLED -> editor.putBoolean(key, value as Boolean)
-                DroidGuard.MODE -> editor.putString(key, value as String)
-                DroidGuard.NETWORK_SERVER_URL -> editor.putString(key, value as String)
-                else -> throw IllegalArgumentException("Unknown key: $key")
-            }
-        }
-        editor.apply()
-    }
+//    private fun queryExposure(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
+//        when (key) {
+//            Exposure.SCANNER_ENABLED -> getSettingsBoolean(key, false)
+//            Exposure.LAST_CLEANUP -> preferences.getLong(key, 0L)
+//            else -> throw IllegalArgumentException("Unknown key: $key")
+//        }
+//    }
+//
+//    private fun updateExposure(values: ContentValues) {
+//        if (values.size() == 0) return
+//        val editor = preferences.edit()
+//        values.valueSet().forEach { (key, value) ->
+//            when (key) {
+//                Exposure.SCANNER_ENABLED -> editor.putBoolean(key, value as Boolean)
+//                Exposure.LAST_CLEANUP -> editor.putLong(key, value as Long)
+//                else -> throw IllegalArgumentException("Unknown key: $key")
+//            }
+//        }
+//        editor.apply()
+//    }
+//
+//    private fun querySafetyNet(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
+//        when (key) {
+//            SafetyNet.ENABLED -> getSettingsBoolean(key, false)
+//            else -> throw IllegalArgumentException("Unknown key: $key")
+//        }
+//    }
+//
+//    private fun updateSafetyNet(values: ContentValues) {
+//        if (values.size() == 0) return
+//        val editor = preferences.edit()
+//        values.valueSet().forEach { (key, value) ->
+//            when (key) {
+//                SafetyNet.ENABLED -> editor.putBoolean(key, value as Boolean)
+//                else -> throw IllegalArgumentException("Unknown key: $key")
+//            }
+//        }
+//        editor.apply()
+//    }
+//
+//    private fun queryDroidGuard(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
+//        when (key) {
+//            DroidGuard.ENABLED -> getSettingsBoolean(key, false)
+//            DroidGuard.MODE -> getSettingsString(key)
+//            DroidGuard.NETWORK_SERVER_URL -> getSettingsString(key)
+//            else -> throw IllegalArgumentException("Unknown key: $key")
+//        }
+//    }
+//
+//    private fun updateDroidGuard(values: ContentValues) {
+//        if (values.size() == 0) return
+//        val editor = preferences.edit()
+//        values.valueSet().forEach { (key, value) ->
+//            when (key) {
+//                DroidGuard.ENABLED -> editor.putBoolean(key, value as Boolean)
+//                DroidGuard.MODE -> editor.putString(key, value as String)
+//                DroidGuard.NETWORK_SERVER_URL -> editor.putString(key, value as String)
+//                else -> throw IllegalArgumentException("Unknown key: $key")
+//            }
+//        }
+//        editor.apply()
+//    }
 
     private fun queryProfile(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
         when (key) {

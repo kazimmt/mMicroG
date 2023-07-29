@@ -108,10 +108,7 @@ public class AuthManager {
             }
         }
         String perm = getUserData(buildPermKey());
-        if (!"1".equals(perm)) {
-            return false;
-        }
-        return true;
+        return "1".equals(perm);
     }
 
     public void setExpiry(long expiry) {
