@@ -81,6 +81,9 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT;
 import static org.microg.gms.auth.AuthPrefs.isAuthVisible;
+//import static org.microg.gms.checkin.CheckinPreferences.hideLauncherIcon;
+import static org.microg.gms.checkin.CheckinPreferences.isSpoofingEnabled;
+import static org.microg.gms.checkin.CheckinPreferences.setSpoofingEnabled;
 import static org.microg.gms.common.Constants.GMS_PACKAGE_NAME;
 import static org.microg.gms.common.Constants.GMS_VERSION_CODE;
 import static org.microg.gms.common.Constants.GOOGLE_GMS_PACKAGE_NAME;
@@ -166,10 +169,32 @@ public class LoginActivity extends AssistantActivity {
     }
 
     @Override
+    protected void onHuaweiButtonClicked() {
+        super.onHuaweiButtonClicked();
+        state++;
+        if (state == 1) {
+//            hideLauncherIcon(this, false);
+//            UtilsKt.hideIcon(this, false);
+            if (!isSpoofingEnabled(this)) {
+                LastCheckinInfo.clear(this);
+                setSpoofingEnabled(this, true);
+            }
+            init();
+        } else if (state == -1) {
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+    }
+
+    @Override
     protected void onNextButtonClicked() {
         super.onNextButtonClicked();
         state++;
         if (state == 1) {
+            if (isSpoofingEnabled(this)) {
+                LastCheckinInfo.clear(this);
+                setSpoofingEnabled(this, false);
+            }
             init();
         } else if (state == -1) {
             setResult(RESULT_CANCELED);
@@ -312,7 +337,7 @@ public class LoginActivity extends AssistantActivity {
                 .token(oAuthToken).isAccessToken()
                 .addAccount()
                 .getAccountId()
-                .droidguardResults(null /*TODO*/)
+//                .droidguardResults(null /*TODO*/)
                 .getResponseAsync(new HttpFormClient.Callback<AuthResponse>() {
                     @Override
                     public void onResponse(AuthResponse response) {
