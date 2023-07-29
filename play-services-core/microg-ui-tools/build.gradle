@@ -17,11 +17,10 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion androidCompileSdk
-    buildToolsVersion "$androidBuildVersionTools"
+    compileSdk androidCompileSdk
+    // buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
-        versionName version
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
 
@@ -37,6 +36,7 @@ android {
         // TODO: Remove MissingTranslation once we have stable strings and proper translations.
         disable 'MissingTranslation'
     }
+    namespace 'org.microg.tools.ui'
 }
 
 dependencies {

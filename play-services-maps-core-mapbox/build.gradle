@@ -31,11 +31,10 @@ dependencies {
 }
 
 android {
-    compileSdkVersion androidCompileSdk
-    buildToolsVersion "$androidBuildVersionTools"
+    compileSdk androidCompileSdk
+    // buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
-        versionName version
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
         buildConfigField "String", "MAPBOX_KEY", "\"${localProperties.getProperty("mapbox.key", System.getenv('MAPBOX_VECTOR_TILES_KEY') ?: "")}\""
@@ -64,6 +63,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    namespace 'org.microg.gms.maps.mapbox'
 }
 
 if (file('user.gradle').exists()) {

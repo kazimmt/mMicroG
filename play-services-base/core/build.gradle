@@ -23,8 +23,8 @@ dependencies {
 }
 
 android {
-    compileSdkVersion androidCompileSdk
-    buildToolsVersion "$androidBuildVersionTools"
+    compileSdk androidCompileSdk
+    // buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
         versionName version
@@ -46,6 +46,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
+    namespace 'org.microg.gms.base.core'
 
     lintOptions {
         disable 'MissingTranslation'
