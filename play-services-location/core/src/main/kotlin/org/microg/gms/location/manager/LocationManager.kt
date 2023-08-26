@@ -134,7 +134,7 @@ class LocationManager(private val context: Context, override val lifecycle: Life
         }
         val intent = Intent(context, LocationManagerService::class.java)
         intent.action = NetworkLocationService.ACTION_REPORT_LOCATION
-        coarsePendingIntent = PendingIntent.getService(context, 0, intent, (if (SDK_INT >= 31) FLAG_MUTABLE else 0) or FLAG_UPDATE_CURRENT)
+        coarsePendingIntent = PendingIntent.getService(context, 0, intent, (if (SDK_INT >= 31) FLAG_MUTABLE else FLAG_IMMUTABLE) or FLAG_UPDATE_CURRENT)
         lastLocationCapsule.start()
         requestManager.start()
     }

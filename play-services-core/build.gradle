@@ -47,8 +47,8 @@ dependencies {
 android {
     namespace "$applicationNamespace"
 
-    compileSdkVersion androidCompileSdk
-    buildToolsVersion "$androidBuildVersionTools"
+    compileSdk androidCompileSdk
+    // buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
         applicationId "${basePackageName}.android.gms"
@@ -64,6 +64,16 @@ android {
 
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+
+        // Specify the ABIs you want to support
+        splits {
+            abi {
+                enable true
+                reset()
+                include "arm64-v8a", "armeabi-v7a", "x86", "x86_64"
+                universalApk true
+            }
         }
 
         buildConfigField "String", "APPLICATION_NAMESPACE", "\"${android.namespace}\""

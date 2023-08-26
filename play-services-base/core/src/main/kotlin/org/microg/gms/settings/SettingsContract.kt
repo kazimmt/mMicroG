@@ -28,6 +28,8 @@ object SettingsContract {
         const val VERSION_INFO = "versionInfo"
         const val DEVICE_DATA_VERSION_INFO = "deviceDataVersionInfo"
 
+        const val BRAND_SPOOF = "brandSpoof"
+
         val PROJECTION = arrayOf(
             ENABLED,
             ANDROID_ID,
@@ -36,6 +38,7 @@ object SettingsContract {
             SECURITY_TOKEN,
             VERSION_INFO,
             DEVICE_DATA_VERSION_INFO,
+            BRAND_SPOOF
         )
         const val PREFERENCES_NAME = "checkin"
         const val INITIAL_DIGEST = "1-929a0dca0eee55513280171a8585da7dcd3700f8"
@@ -89,47 +92,47 @@ object SettingsContract {
         )
     }
 
-    object Exposure {
-        private const val id = "exposureNotification"
-        fun getContentUri(context: Context) = Uri.withAppendedPath(getAuthorityUri(context), id)
-        fun getContentType(context: Context) = "vnd.android.cursor.item/vnd.${getAuthority(context)}.$id"
-
-        const val SCANNER_ENABLED = "exposure_scanner_enabled"
-        const val LAST_CLEANUP = "exposure_last_cleanup"
-
-        val PROJECTION = arrayOf(
-            SCANNER_ENABLED,
-            LAST_CLEANUP,
-        )
-    }
-
-    object SafetyNet {
-        private const val id = "safety-net"
-        fun getContentUri(context: Context) = Uri.withAppendedPath(getAuthorityUri(context), id)
-        fun getContentType(context: Context) = "vnd.android.cursor.item/vnd.${getAuthority(context)}.$id"
-
-        const val ENABLED = "safetynet_enabled"
-
-        val PROJECTION = arrayOf(
-            ENABLED
-        )
-    }
-
-    object DroidGuard {
-        private const val id = "droidguard"
-        fun getContentUri(context: Context) = Uri.withAppendedPath(getAuthorityUri(context), id)
-        fun getContentType(context: Context) = "vnd.android.cursor.item/vnd.${getAuthority(context)}.$id"
-
-        const val ENABLED = "droidguard_enabled"
-        const val MODE = "droidguard_mode"
-        const val NETWORK_SERVER_URL = "droidguard_network_server_url"
-
-        val PROJECTION = arrayOf(
-            ENABLED,
-            MODE,
-            NETWORK_SERVER_URL
-        )
-    }
+//    object Exposure {
+//        private const val id = "exposureNotification"
+//        fun getContentUri(context: Context) = Uri.withAppendedPath(getAuthorityUri(context), id)
+//        fun getContentType(context: Context) = "vnd.android.cursor.item/vnd.${getAuthority(context)}.$id"
+//
+//        const val SCANNER_ENABLED = "exposure_scanner_enabled"
+//        const val LAST_CLEANUP = "exposure_last_cleanup"
+//
+//        val PROJECTION = arrayOf(
+//            SCANNER_ENABLED,
+//            LAST_CLEANUP,
+//        )
+//    }
+//
+//    object SafetyNet {
+//        private const val id = "safety-net"
+//        fun getContentUri(context: Context) = Uri.withAppendedPath(getAuthorityUri(context), id)
+//        fun getContentType(context: Context) = "vnd.android.cursor.item/vnd.${getAuthority(context)}.$id"
+//
+//        const val ENABLED = "safetynet_enabled"
+//
+//        val PROJECTION = arrayOf(
+//            ENABLED
+//        )
+//    }
+//
+//    object DroidGuard {
+//        private const val id = "droidguard"
+//        fun getContentUri(context: Context) = Uri.withAppendedPath(getAuthorityUri(context), id)
+//        fun getContentType(context: Context) = "vnd.android.cursor.item/vnd.${getAuthority(context)}.$id"
+//
+//        const val ENABLED = "droidguard_enabled"
+//        const val MODE = "droidguard_mode"
+//        const val NETWORK_SERVER_URL = "droidguard_network_server_url"
+//
+//        val PROJECTION = arrayOf(
+//            ENABLED,
+//            MODE,
+//            NETWORK_SERVER_URL
+//        )
+//    }
 
     object Profile {
         private const val id = "profile"
@@ -145,21 +148,21 @@ object SettingsContract {
         )
     }
 
-    object Location {
-        private const val id = "location"
-        fun getContentUri(context: Context) = Uri.withAppendedPath(getAuthorityUri(context), id)
-        fun getContentType(context: Context) = "vnd.android.cursor.item/vnd.${getAuthority(context)}.$id"
-
-        const val WIFI_MLS = "location_wifi_mls"
-        const val WIFI_MOVING = "location_wifi_moving"
-        const val CELL_MLS = "location_cell_mls"
-
-        val PROJECTION = arrayOf(
-            WIFI_MLS,
-            WIFI_MOVING,
-            CELL_MLS
-        )
-    }
+//    object Location {
+//        private const val id = "location"
+//        fun getContentUri(context: Context) = Uri.withAppendedPath(getAuthorityUri(context), id)
+//        fun getContentType(context: Context) = "vnd.android.cursor.item/vnd.${getAuthority(context)}.$id"
+//
+//        const val WIFI_MLS = "location_wifi_mls"
+//        const val WIFI_MOVING = "location_wifi_moving"
+//        const val CELL_MLS = "location_cell_mls"
+//
+//        val PROJECTION = arrayOf(
+//            WIFI_MLS,
+//            WIFI_MOVING,
+//            CELL_MLS
+//        )
+//    }
 
     private fun <T> withoutCallingIdentity(f: () -> T): T {
         val identity = Binder.clearCallingIdentity()

@@ -20,8 +20,8 @@ dependencies {
 }
 
 android {
-    compileSdkVersion androidCompileSdk
-    buildToolsVersion "$androidBuildVersionTools"
+    compileSdk androidCompileSdk
+    // buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
         versionName version
@@ -49,6 +49,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17
     }
+    namespace 'com.google.android.gms.cast.framework.core'
 }
 
 apply from: '../../gradle/publish-android.gradle'

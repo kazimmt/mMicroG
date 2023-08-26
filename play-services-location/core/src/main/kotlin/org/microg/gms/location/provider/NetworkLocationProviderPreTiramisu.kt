@@ -86,7 +86,7 @@ class NetworkLocationProviderPreTiramisu : AbstractLocationProviderPreTiramisu {
             if (enabled) throw IllegalStateException()
             val intent = Intent(context, NetworkLocationProviderService::class.java)
             intent.action = ACTION_REPORT_LOCATION
-            pendingIntent = PendingIntent.getService(context, 0, intent, (if (SDK_INT >= 31) FLAG_MUTABLE else 0) or FLAG_UPDATE_CURRENT)
+            pendingIntent = PendingIntent.getService(context, 0, intent, (if (SDK_INT >= 31) FLAG_MUTABLE else FLAG_IMMUTABLE) or FLAG_UPDATE_CURRENT)
             currentRequest = null
             enabled = true
             when {

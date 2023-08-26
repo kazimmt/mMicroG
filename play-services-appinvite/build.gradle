@@ -19,8 +19,8 @@ apply plugin: 'com.android.library'
 group = 'org.microg'
 
 android {
-    compileSdkVersion androidCompileSdk
-    buildToolsVersion "$androidBuildVersionTools"
+    compileSdk androidCompileSdk
+    // buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
         versionName version
