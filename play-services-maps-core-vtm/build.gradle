@@ -33,12 +33,10 @@ dependencies {
 }
 
 android {
-    compileSdkVersion androidCompileSdk
-    buildToolsVersion "$androidBuildVersionTools"
+    compileSdk androidCompileSdk
+    // buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
-        versionName "temp"
-        versionCode 1
 
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
@@ -68,6 +66,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    namespace 'org.microg.gms.maps.vtm'
 }
 
 if (file("user.gradle").exists()) {

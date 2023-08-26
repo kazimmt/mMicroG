@@ -8,6 +8,7 @@ package org.microg.gms.utils
 import android.app.AlarmManager
 import android.app.AlarmManager.ELAPSED_REALTIME_WAKEUP
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.PendingIntent.FLAG_NO_CREATE
 import android.app.PendingIntent.FLAG_MUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
@@ -29,7 +30,7 @@ class IntentCacheManager<S : Service, T : Parcelable>(private val context: Conte
     private val pendingActions: MutableList<() -> Unit> = arrayListOf()
 
     init {
-        val pendingIntent = PendingIntent.getService(context, type, getIntent(), if (SDK_INT >= 31) FLAG_MUTABLE else 0)
+        val pendingIntent = PendingIntent.getService(context, type, getIntent(), if (SDK_INT >= 31) FLAG_MUTABLE else FLAG_IMMUTABLE)
         val alarmManager = context.getSystemService<AlarmManager>()
         if (SDK_INT >= 19) {
             alarmManager?.setWindow(ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + TEN_YEARS, -1, pendingIntent)
@@ -116,7 +117,7 @@ class IntentCacheManager<S : Service, T : Parcelable>(private val context: Conte
                     putExtra(EXTRA_ID, id)
                     putParcelableArrayListExtra(EXTRA_DATA, content)
                 }
-                val pendingIntent = PendingIntent.getService(context, type, intent, FLAG_NO_CREATE or FLAG_UPDATE_CURRENT or if (SDK_INT >= 31) FLAG_MUTABLE else 0)
+                val pendingIntent = PendingIntent.getService(context, type, intent, FLAG_NO_CREATE or FLAG_UPDATE_CURRENT or if (SDK_INT >= 31) FLAG_MUTABLE else FLAG_IMMUTABLE)
                 if (pendingIntent == null) {
                     Log.w(TAG, "Failed to update existing pending intent, will likely have a loss of information")
                 }
