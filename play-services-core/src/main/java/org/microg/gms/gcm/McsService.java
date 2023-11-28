@@ -28,7 +28,6 @@ import android.content.pm.PermissionInfo;
 import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -45,7 +44,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.legacy.content.WakefulBroadcastReceiver;
 
-import com.google.android.gms.R;
 import com.squareup.wire.Message;
 
 import org.microg.gms.checkin.LastCheckinInfo;
@@ -83,7 +81,7 @@ import static org.microg.gms.common.PackageUtils.warnIfNotPersistentProcess;
 import static org.microg.gms.gcm.GcmConstants.*;
 import static org.microg.gms.gcm.McsConstants.*;
 
-@ForegroundServiceInfo(value = "Cloud messaging", res = R.string.service_name_mcs)
+@ForegroundServiceInfo(value = "Cloud messaging", resName = "service_name_mcs", resPackage = "com.google.android.gms")
 public class McsService extends Service implements Handler.Callback {
     private static final String TAG = "GmsGcmMcsSvc";
 
@@ -137,10 +135,10 @@ public class McsService extends Service implements Handler.Callback {
     @Nullable
     private Method addPowerSaveTempWhitelistAppMethod;
     @Nullable
-    @RequiresApi(Build.VERSION_CODES.S)
+    @RequiresApi(31)
     private Object powerExemptionManager;
     @Nullable
-    @RequiresApi(Build.VERSION_CODES.S)
+    @RequiresApi(31)
     private Method addToTemporaryAllowListMethod;
 
     private class HandlerThread extends Thread {
@@ -178,9 +176,9 @@ public class McsService extends Service implements Handler.Callback {
         heartbeatIntent = PendingIntent.getService(this, 0, new Intent(ACTION_HEARTBEAT, null, this, McsService.class), PendingIntent.FLAG_IMMUTABLE);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission("android.permission.CHANGE_DEVICE_IDLE_TEMP_WHITELIST") == PackageManager.PERMISSION_GRANTED) {
+        if (SDK_INT >= 23 && checkSelfPermission("android.permission.CHANGE_DEVICE_IDLE_TEMP_WHITELIST") == PackageManager.PERMISSION_GRANTED) {
             try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (SDK_INT >= 31) {
                     Class<?> powerExemptionManagerClass = Class.forName("android.os.PowerExemptionManager");
                     powerExemptionManager = getSystemService(powerExemptionManagerClass);
                     addToTemporaryAllowListMethod =
@@ -267,7 +265,7 @@ public class McsService extends Service implements Handler.Callback {
         long delay = getCurrentDelay();
         logd(context, "Scheduling reconnect in " + delay / 1000 + " seconds...");
         PendingIntent pi = PendingIntent.getBroadcast(context, 1, new Intent(ACTION_RECONNECT, null, context, TriggerReceiver.class), PendingIntent.FLAG_IMMUTABLE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (SDK_INT >= 23) {
             alarmManager.setExactAndAllowWhileIdle(ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + delay, pi);
         } else {
             alarmManager.set(ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + delay, pi);
@@ -282,10 +280,10 @@ public class McsService extends Service implements Handler.Callback {
             closeAll();
         }
         logd(context, "Scheduling heartbeat in " + heartbeatMs / 1000 + " seconds...");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (SDK_INT >= 23) {
             // This is supposed to work even when running in idle and without battery optimization disabled
             alarmManager.setExactAndAllowWhileIdle(ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + heartbeatMs, heartbeatIntent);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        } else if (SDK_INT >= 19) {
             // With KitKat, the alarms become inexact by default, but with the newly available setWindow we can get inexact alarms with guarantees.
             // Schedule the alarm to fire within the interval [heartbeatMs/3*4, heartbeatMs]
             alarmManager.setWindow(ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + heartbeatMs / 4 * 3, heartbeatMs / 4,
@@ -606,7 +604,7 @@ public class McsService extends Service implements Handler.Callback {
     }
 
     private void addPowerSaveTempWhitelistApp(String packageName) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (SDK_INT >= 31) {
             try {
                 if (addToTemporaryAllowListMethod != null && powerExemptionManager != null) {
                     logd(this, "Adding app " + packageName + " to the temp allowlist");
@@ -615,7 +613,7 @@ public class McsService extends Service implements Handler.Callback {
             } catch (Exception e) {
                 Log.e(TAG, "Error adding app" + packageName + " to the temp allowlist.", e);
             }
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        } else if (SDK_INT >= 23) {
             try {
                 if (getUserIdMethod != null && addPowerSaveTempWhitelistAppMethod != null && deviceIdleController != null) {
                     int userId = (int) getUserIdMethod.invoke(null, getPackageManager().getApplicationInfo(packageName, 0).uid);

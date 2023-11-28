@@ -5,26 +5,17 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 
 configurations {
-    withMapboxImplementation
-    withVtmImplementation
-    withNearbyImplementation
-    withoutNearbyImplementation
+    defaultRuntimeOnly
 }
 
 dependencies {
     implementation "com.squareup.wire:wire-runtime:$wireVersion"
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-
     includeProjects.each { projectName ->
         implementation project(projectName)
     }
-
-//    withMapboxImplementation project(':play-services-maps-core-mapbox')
-    withVtmImplementation project(':play-services-maps-core-vtm')
-//    withNearbyImplementation project(':play-services-nearby-core')
 
     // AndroidX UI
     implementation "androidx.multidex:multidex:$multidexVersion"
@@ -41,14 +32,18 @@ dependencies {
     implementation "com.android.volley:volley:$volleyVersion"
 
     implementation "androidx.lifecycle:lifecycle-service:$lifecycleVersion"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 }
 
 android {
     namespace "$applicationNamespace"
 
-    compileSdk androidCompileSdk
-    // buildToolsVersion "$androidBuildVersionTools"
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion "$androidBuildVersionTools"
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         applicationId "${basePackageName}.android.gms"
@@ -63,17 +58,7 @@ android {
         multiDexKeepProguard file('multidex-keep.pro')
 
         ndk {
-            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
-        }
-
-        // Specify the ABIs you want to support
-        splits {
-            abi {
-                enable true
-                reset()
-                include "arm64-v8a", "armeabi-v7a", "x86", "x86_64"
-                universalApk true
-            }
+            abiFilters "armeabi-v7a", "arm64-v8a"
         }
 
         buildConfigField "String", "APPLICATION_NAMESPACE", "\"${android.namespace}\""
@@ -100,16 +85,10 @@ android {
         main {
             java.srcDirs += 'src/main/kotlin'
         }
-        withNearby {
-            java.srcDirs += 'src/withNearby/kotlin'
-        }
-        withoutNearby {
-            java.srcDirs += 'src/withoutNearby/kotlin'
-        }
     }
 
     lintOptions {
-        disable 'MissingTranslation', 'InvalidPackage', 'BatteryLife', 'ImpliedQuantity', 'MissingQuantity', 'InvalidWakeLockTag'
+        disable 'MissingTranslation', 'InvalidPackage', 'BatteryLife', 'ImpliedQuantity', 'MissingQuantity', 'InvalidWakeLockTag', 'UniquePermission'
     }
 
     buildTypes {
@@ -119,37 +98,40 @@ android {
         }
     }
 
-    flavorDimensions 'maps', 'nearby'
+    flavorDimensions = ['target']
     productFlavors {
-        withMapbox {
-            dimension 'maps'
+        "default" {
+            dimension 'target'
         }
-        withVtm {
-            dimension 'maps'
-            versionNameSuffix '-vtm'
-        }
-        withNearby {
-            dimension 'nearby'
-        }
-        withoutNearby {
-            dimension 'nearby'
-            versionNameSuffix '-noen'
+        "huawei" {
+            dimension 'target'
+            versionNameSuffix "-hw"
         }
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = 1.8
     }
 
     packagingOptions {
         exclude 'META-INF/ASL2.0'
         jniLibs {
-            useLegacyPackaging false
+            useLegacyPackaging true
         }
     }
 }
 
 if (file('user.gradle').exists()) {
     apply from: 'user.gradle'
+}
+
+android.applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+        output.outputFileName = variant.applicationId + "-" + variant.versionCode + variant.versionName.substring(version.length()) + ".apk"
+    }
 }

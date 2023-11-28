@@ -27,7 +27,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Binder;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -37,6 +36,7 @@ import org.microg.gms.common.PackageUtils;
 
 import java.util.Arrays;
 
+import static android.os.Build.VERSION.SDK_INT;
 import static org.microg.gms.auth.AuthConstants.DEFAULT_ACCOUNT_TYPE;
 import static org.microg.gms.auth.AuthConstants.PROVIDER_EXTRA_ACCOUNTS;
 import static org.microg.gms.auth.AuthConstants.PROVIDER_EXTRA_CLEAR_PASSWORD;
@@ -55,31 +55,30 @@ public class AccountContentProvider extends ContentProvider {
     @Override
     public Bundle call(String method, String arg, Bundle extras) {
         String suggestedPackageName = null;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+        if (SDK_INT > 19) {
             suggestedPackageName = getCallingPackage();
         }
         String packageName = PackageUtils.getAndCheckCallingPackage(getContext(), suggestedPackageName);
-        Log.d(TAG, "Call " + method + " from " + packageName + " with arg " + arg);
         if (!PackageUtils.callerHasExtendedAccess(getContext())) {
             String[] packagesForUid = getContext().getPackageManager().getPackagesForUid(Binder.getCallingUid());
             if (packagesForUid != null && packagesForUid.length != 0)
                 Log.w(TAG, "Not granting extended access to " + Arrays.toString(packagesForUid)
                         + ", signature: " + PackageUtils.firstSignatureDigest(getContext(), packagesForUid[0]));
             if (getContext().checkCallingPermission(Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED)
-                    throw new SecurityException("Access denied, missing GET_ACCOUNTS or EXTENDED_ACCESS permission");
+                throw new SecurityException("Access denied, missing GET_ACCOUNTS or EXTENDED_ACCESS permission");
         }
         if (PROVIDER_METHOD_GET_ACCOUNTS.equals(method)) {
             Bundle result = new Bundle();
             Account[] accounts = null;
             if (arg != null && (arg.equals(DEFAULT_ACCOUNT_TYPE) || arg.startsWith(DEFAULT_ACCOUNT_TYPE + "."))) {
                 AccountManager am = AccountManager.get(getContext());
-                if (Build.VERSION.SDK_INT >= 18) {
+                if (SDK_INT >= 18) {
                     accounts = am.getAccountsByTypeForPackage(arg, packageName);
                 }
                 if (accounts == null || accounts.length == 0) {
                     accounts = am.getAccountsByType(arg);
                 }
-                if (Build.VERSION.SDK_INT >= 26 && accounts != null && arg.equals(DEFAULT_ACCOUNT_TYPE)) {
+                if (SDK_INT >= 26 && accounts != null && arg.equals(DEFAULT_ACCOUNT_TYPE)) {
                     for (Account account : accounts) {
                         if (am.getAccountVisibility(account, packageName) == AccountManager.VISIBILITY_UNDEFINED) {
                             Log.d(TAG, "Make account " + account + " visible to " + packageName);
@@ -93,7 +92,6 @@ public class AccountContentProvider extends ContentProvider {
             }
 
             result.putParcelableArray(PROVIDER_EXTRA_ACCOUNTS, accounts);
-            Log.d(TAG, "get_accounts returns: " + Arrays.toString(accounts));
             return result;
         } else if (PROVIDER_METHOD_CLEAR_PASSWORD.equals(method) && PackageUtils.callerHasExtendedAccess(getContext())) {
             Account a = extras.getParcelable(PROVIDER_EXTRA_CLEAR_PASSWORD);

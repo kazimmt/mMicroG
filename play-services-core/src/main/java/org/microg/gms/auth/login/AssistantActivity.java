@@ -17,13 +17,13 @@
 package org.microg.gms.auth.login;
 
 import android.annotation.SuppressLint;
-//import android.app.Activity;
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
-//import android.widget.RelativeLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.StringRes;
@@ -43,12 +43,7 @@ public abstract class AssistantActivity extends AppCompatActivity {
         findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 if (!isHuaweiDevice()) {
-                     onNextButtonClicked();
-                 }
-                 else {
-                     onHuaweiButtonClicked();
-                 }
+                onNextButtonClicked();
             }
         });
         findViewById(R.id.back_button).setOnClickListener(new View.OnClickListener() {
@@ -57,12 +52,6 @@ public abstract class AssistantActivity extends AppCompatActivity {
                 onBackButtonClicked();
             }
         });
-    }
-
-    private boolean isHuaweiDevice(){
-        String manufacturer = android.os.Build.MANUFACTURER;
-        String brand =  android.os.Build.BRAND;
-        return  manufacturer.toLowerCase().contains("huawei") ||  brand.toLowerCase().contains("huawei");
     }
 
     @SuppressLint("WrongViewCast")
@@ -87,9 +76,6 @@ public abstract class AssistantActivity extends AppCompatActivity {
             findViewById(R.id.next_button).setVisibility(View.VISIBLE);
             ((Button) findViewById(R.id.next_button)).setText(text);
         }
-    }
-    protected void onHuaweiButtonClicked() {
-
     }
 
     public void setBackButtonText(@StringRes int res) {

@@ -33,7 +33,10 @@ import org.microg.gms.base.core.BuildConfig;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static org.microg.gms.common.Constants.GMS_PACKAGE_NAME;
@@ -48,7 +51,7 @@ public class PackageUtils {
     private static final String GOOGLE_LEGACY_KEY = "58e1c4133f7441ec3d2c270270a14802da47ba0e"; // Seems to be no longer used.
     private static final String[] GOOGLE_PRIMARY_KEYS = {GOOGLE_PLATFORM_KEY, GOOGLE_PLATFORM_KEY_2, GOOGLE_APP_KEY};
 
-    private static final Map<String, String> KNOWN_GOOGLE_PACKAGES;
+    public static final Map<String, String> KNOWN_GOOGLE_PACKAGES;
 
     static {
         KNOWN_GOOGLE_PACKAGES = new HashMap<>();
@@ -75,10 +78,13 @@ public class PackageUtils {
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.apps.kids.familylink", "88652b8464743e5ce80da0d4b890d13f9b1873df");
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.apps.walletnfcrel", "82759e2db43f9ccbafce313bc674f35748fabd7a");
         KNOWN_GOOGLE_PACKAGES.put("com.google.android.apps.recorder", "394d84cd2cf89d3453702c663f98ec6554afc3cd");
+        KNOWN_GOOGLE_PACKAGES.put("com.google.android.apps.messaging", "0980a12be993528c19107bc21ad811478c63cefc");
+        KNOWN_GOOGLE_PACKAGES.put("com.google.android.apps.tachyon", "a0bc09af527b6397c7a9ef171d6cf76f757becc3");
     }
 
     public static boolean isGooglePackage(Context context, String packageName) {
         String signatureDigest = firstSignatureDigest(context, packageName);
+        packageName = PackageSpoofUtils.spoofPackageName(context.getPackageManager(), packageName);
         return isGooglePackage(packageName, signatureDigest);
     }
 
@@ -136,7 +142,7 @@ public class PackageUtils {
         try {
             info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
         } catch (PackageManager.NameNotFoundException e) {
-            return null;
+            return KNOWN_GOOGLE_PACKAGES.get(packageName);
         }
         if (info != null && info.signatures != null && info.signatures.length > 0) {
             for (Signature sig : info.signatures) {
@@ -283,7 +289,7 @@ public class PackageUtils {
     @SuppressWarnings("deprecation")
     public static String packageFromPendingIntent(PendingIntent pi) {
         if (pi == null) return null;
-        if (SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (SDK_INT < 17) {
             return pi.getTargetPackage();
         } else {
             return pi.getCreatorPackage();

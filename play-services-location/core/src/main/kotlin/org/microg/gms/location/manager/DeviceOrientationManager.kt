@@ -40,9 +40,11 @@ import org.microg.gms.utils.WorkSourceUtil
 import java.io.PrintWriter
 import kotlin.math.*
 
-class DeviceOrientationManager(private val context: Context, override val lifecycle: Lifecycle) : LifecycleOwner, SensorEventListener, IBinder.DeathRecipient {
+class DeviceOrientationManager(private val context: Context, private val lifecycle: Lifecycle) : LifecycleOwner, SensorEventListener, IBinder.DeathRecipient {
+    override fun getLifecycle(): Lifecycle = lifecycle
     private var lock = Mutex(false)
     private var started: Boolean = false
+    private var sensors: Set<Sensor>? = null
     private var handlerThread: HandlerThread? = null
     private val requests = mutableMapOf<IBinder, DeviceOrientationRequestHolder>()
 
@@ -91,6 +93,7 @@ class DeviceOrientationManager(private val context: Context, override val lifecy
                 for (sensor in sensors) {
                     sensorManager.registerListener(sensor, handler)
                 }
+                this.sensors = sensors
                 started = true
             } catch (e: Exception) {
                 Log.w(TAG, e)
@@ -256,7 +259,7 @@ class DeviceOrientationManager(private val context: Context, override val lifecy
     }
 
     fun dump(writer: PrintWriter) {
-        writer.println("Current device orientation request (started=$started)")
+        writer.println("Current device orientation request (started=$started, sensors=${sensors?.map { it.name }})")
         for (request in requests.values.toList()) {
             writer.println("- ${request.workSource} (pending: ${request.updatesPending.let { if (it == Int.MAX_VALUE) "\u221e" else "$it" }} ${request.timePendingMillis.formatDuration()})")
         }

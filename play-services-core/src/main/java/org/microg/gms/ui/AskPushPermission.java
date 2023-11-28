@@ -1,32 +1,23 @@
 package org.microg.gms.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.ResultReceiver;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.SpannedString;
 import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.R;
 
 import org.microg.gms.gcm.GcmDatabase;
-import org.microg.gms.gcm.PushRegisterService;
-
-import static org.microg.gms.gcm.GcmConstants.EXTRA_APP;
-import static org.microg.gms.gcm.GcmConstants.EXTRA_KID;
-import static org.microg.gms.gcm.GcmConstants.EXTRA_PENDING_INTENT;
 
 public class AskPushPermission extends FragmentActivity {
     public static final String EXTRA_REQUESTED_PACKAGE = "package";
@@ -60,8 +51,9 @@ public class AskPushPermission extends FragmentActivity {
             return;
         }
 
-        setContentView(R.layout.ask_gcm);
+        View gcmView = getLayoutInflater().inflate(R.layout.ask_gcm, null);
 
+        // Create and show the AlertDialog
         try {
             PackageManager pm = getPackageManager();
             final ApplicationInfo info = pm.getApplicationInfo(packageName, 0);
@@ -70,8 +62,11 @@ public class AskPushPermission extends FragmentActivity {
             SpannableString s = new SpannableString(raw);
             s.setSpan(new StyleSpan(Typeface.BOLD), raw.indexOf(label), raw.indexOf(label) + label.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
-            ((TextView) findViewById(R.id.permission_message)).setText(s);
-            findViewById(R.id.permission_allow_button).setOnClickListener(new View.OnClickListener() {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setCancelable(false); // Disable canceling the dialog by tapping outside or pressing the back button
+            alertDialogBuilder.setView(gcmView);
+            ((TextView) gcmView.findViewById(R.id.permission_message)).setText(s);
+            gcmView.findViewById(R.id.permission_allow_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (answered) return;
@@ -83,7 +78,7 @@ public class AskPushPermission extends FragmentActivity {
                     finish();
                 }
             });
-            findViewById(R.id.permission_deny_button).setOnClickListener(new View.OnClickListener() {
+            gcmView.findViewById(R.id.permission_deny_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (answered) return;
@@ -95,6 +90,8 @@ public class AskPushPermission extends FragmentActivity {
                     finish();
                 }
             });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         } catch (PackageManager.NameNotFoundException e) {
             finish();
         }

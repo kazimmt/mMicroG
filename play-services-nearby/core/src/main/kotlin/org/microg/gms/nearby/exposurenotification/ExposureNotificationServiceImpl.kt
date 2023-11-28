@@ -5,6 +5,7 @@
 
 package org.microg.gms.nearby.exposurenotification
 
+import android.annotation.TargetApi
 import android.app.Activity
 import android.app.PendingIntent
 import android.bluetooth.BluetoothAdapter
@@ -50,7 +51,8 @@ import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
-class ExposureNotificationServiceImpl(private val context: Context, override val lifecycle: Lifecycle, private val packageName: String) : INearbyExposureNotificationService.Stub(), LifecycleOwner {
+@TargetApi(21)
+class ExposureNotificationServiceImpl(private val context: Context, private val lifecycle: Lifecycle, private val packageName: String) : INearbyExposureNotificationService.Stub(), LifecycleOwner {
 
     // Table of back-end public keys, used to verify the signature of the diagnosed TEKs.
     // The table is indexed by package names.
@@ -92,6 +94,8 @@ class ExposureNotificationServiceImpl(private val context: Context, override val
     )
 
     private fun LifecycleCoroutineScope.launchSafely(block: suspend CoroutineScope.() -> Unit): Job = launchWhenStarted { try { block() } catch (e: Exception) { Log.w(TAG, "Error in coroutine", e) } }
+
+    override fun getLifecycle(): Lifecycle = lifecycle
 
     private fun pendingConfirm(permission: String): PendingIntent {
         val intent = Intent(ACTION_CONFIRM)

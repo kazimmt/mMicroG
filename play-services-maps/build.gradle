@@ -8,22 +8,25 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 android {
-    compileSdk androidCompileSdk
-    // buildToolsVersion "$androidBuildVersionTools"
+    namespace "com.google.android.gms.maps"
+
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion "$androidBuildVersionTools"
+
+    buildFeatures {
+        aidl = true
+    }
 
     defaultConfig {
+        versionName version
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
-    buildFeatures {
-        aidl true
-    }
-    namespace 'com.google.android.gms.maps'
 }
 
 apply from: '../gradle/publish-android.gradle'
@@ -32,7 +35,9 @@ description = 'microG implementation of play-services-maps'
 
 dependencies {
     // Dependencies from play-services-maps:18.1.0
-    api 'androidx.fragment:fragment:1.6.0'
+    api "androidx.fragment:fragment:1.0.0"
     api project(":play-services-base")
     api project(":play-services-basement")
+
+    annotationProcessor project(":safe-parcel-processor")
 }

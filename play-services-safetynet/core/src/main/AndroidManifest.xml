@@ -4,14 +4,12 @@
   ~ SPDX-License-Identifier: Apache-2.0
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.microg.gms.safetynet.core">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
-        <service android:name="org.microg.gms.safetynet.SafetyNetClientService"
-            android:exported="true">
+        <service android:name="org.microg.gms.safetynet.SafetyNetClientService">
             <intent-filter>
-                <action android:name="${basePackageName}.android.gms.safetynet.service.START" />
+                <action android:name="com.google.android.gms.safetynet.service.START" />
             </intent-filter>
         </service>
         <activity
@@ -22,7 +20,7 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.Dialog.NoActionBar">
             <intent-filter>
-                <action android:name="${basePackageName}.gms.safetynet.RECAPTCHA_ACTIVITY" />
+                <action android:name="org.microg.gms.safetynet.RECAPTCHA_ACTIVITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

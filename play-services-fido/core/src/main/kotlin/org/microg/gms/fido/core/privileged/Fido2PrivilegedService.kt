@@ -12,7 +12,7 @@ import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Context.KEYGUARD_SERVICE
 import android.content.Intent
-import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Parcel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -24,6 +24,7 @@ import com.google.android.gms.common.internal.ConnectionInfo
 import com.google.android.gms.common.internal.GetServiceRequest
 import com.google.android.gms.common.internal.IGmsCallbacks
 import com.google.android.gms.fido.fido2.api.IBooleanCallback
+import com.google.android.gms.fido.fido2.api.ICredentialListCallback
 import com.google.android.gms.fido.fido2.api.common.BrowserPublicKeyCredentialCreationOptions
 import com.google.android.gms.fido.fido2.api.common.BrowserPublicKeyCredentialRequestOptions
 import com.google.android.gms.fido.fido2.internal.privileged.IFido2PrivilegedCallbacks
@@ -58,9 +59,9 @@ class Fido2PrivilegedService : BaseService(TAG, FIDO2_PRIVILEGED) {
     }
 }
 
-class Fido2PrivilegedServiceImpl(private val context: Context, override val lifecycle: Lifecycle) :
+class Fido2PrivilegedServiceImpl(private val context: Context, private val lifecycle: Lifecycle) :
     IFido2PrivilegedService.Stub(), LifecycleOwner {
-    override fun register(callbacks: IFido2PrivilegedCallbacks, options: BrowserPublicKeyCredentialCreationOptions) {
+    override fun getRegisterPendingIntent(callbacks: IFido2PrivilegedCallbacks, options: BrowserPublicKeyCredentialCreationOptions) {
         lifecycleScope.launchWhenStarted {
             val intent = Intent(context, AuthenticatorActivity::class.java)
                 .putExtra(KEY_SERVICE, FIDO2_PRIVILEGED.SERVICE_ID)
@@ -74,7 +75,7 @@ class Fido2PrivilegedServiceImpl(private val context: Context, override val life
         }
     }
 
-    override fun sign(callbacks: IFido2PrivilegedCallbacks, options: BrowserPublicKeyCredentialRequestOptions) {
+    override fun getSignPendingIntent(callbacks: IFido2PrivilegedCallbacks, options: BrowserPublicKeyCredentialRequestOptions) {
         lifecycleScope.launchWhenStarted {
             val intent = Intent(context, AuthenticatorActivity::class.java)
                 .putExtra(KEY_SERVICE, FIDO2_PRIVILEGED.SERVICE_ID)
@@ -90,7 +91,7 @@ class Fido2PrivilegedServiceImpl(private val context: Context, override val life
 
     override fun isUserVerifyingPlatformAuthenticatorAvailable(callbacks: IBooleanCallback) {
         lifecycleScope.launchWhenStarted {
-            if (Build.VERSION.SDK_INT < 24) {
+            if (SDK_INT < 24) {
                 callbacks.onBoolean(false)
             } else {
                 val keyguardManager = context.getSystemService(KEYGUARD_SERVICE) as? KeyguardManager?
@@ -98,6 +99,14 @@ class Fido2PrivilegedServiceImpl(private val context: Context, override val life
             }
         }
     }
+
+    override fun getCredentialList(callbacks: ICredentialListCallback, rpId: String) {
+        lifecycleScope.launchWhenStarted {
+            runCatching { callbacks.onCredentialList(emptyList()) }
+        }
+    }
+
+    override fun getLifecycle(): Lifecycle = lifecycle
 
     override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean =
         warnOnTransactionIssues(code, reply, flags, TAG) { super.onTransact(code, data, reply, flags) }

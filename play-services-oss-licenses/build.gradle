@@ -8,8 +8,14 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 android {
-    compileSdk androidCompileSdk
-    // buildToolsVersion "$androidBuildVersionTools"
+    namespace "com.google.android.gms.oss.licenses"
+
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion "$androidBuildVersionTools"
+
+    buildFeatures {
+        aidl = true
+    }
 
     defaultConfig {
         versionName version
@@ -17,9 +23,13 @@ android {
         targetSdkVersion androidTargetSdk
     }
 
+    lintOptions {
+        disable 'MissingTranslation'
+    }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 }
 
@@ -29,9 +39,9 @@ description = 'microG implementation of play-services-oss-licenses'
 
 dependencies {
     // Dependencies from play-services-oss-licenses:17.0.0
-    api 'androidx.loader:loader:1.1.0'
+    api "androidx.loader:loader:1.0.0"
     api project(':play-services-base')
     api project(':play-services-basement')
     api project(':play-services-tasks')
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation "androidx.appcompat:appcompat:1.0.0"
 }

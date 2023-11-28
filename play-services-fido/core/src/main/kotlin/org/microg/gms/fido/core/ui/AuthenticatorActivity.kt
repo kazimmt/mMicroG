@@ -8,7 +8,7 @@ package org.microg.gms.fido.core.ui
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -60,8 +60,8 @@ class AuthenticatorActivity : AppCompatActivity(), TransportHandlerCallback {
         setOfNotNull(
             BluetoothTransportHandler(this, this),
             NfcTransportHandler(this, this),
-            if (Build.VERSION.SDK_INT >= 21) UsbTransportHandler(this, this) else null,
-            if (Build.VERSION.SDK_INT >= 23) ScreenLockTransportHandler(this, this) else null
+            if (SDK_INT >= 21) UsbTransportHandler(this, this) else null,
+            if (SDK_INT >= 23) ScreenLockTransportHandler(this, this) else null
         )
     }
 
@@ -84,7 +84,7 @@ class AuthenticatorActivity : AppCompatActivity(), TransportHandlerCallback {
             if (!intent.extras?.keySet().orEmpty().containsAll(REQUIRED_EXTRAS)) {
                 return finishWithError(UNKNOWN_ERR, "Extra missing from request")
             }
-            if (Build.VERSION.SDK_INT < 24) {
+            if (SDK_INT < 24) {
                 return finishWithError(NOT_SUPPORTED_ERR, "FIDO2 API is not supported on devices below N")
             }
             val options = options ?: return finishWithError(DATA_ERR, "The request options are not valid")
@@ -103,11 +103,11 @@ class AuthenticatorActivity : AppCompatActivity(), TransportHandlerCallback {
                 if (instantTransport != null && instantTransport.transport in INSTANT_SUPPORTED_TRANSPORTS) {
                     window.setBackgroundDrawable(ColorDrawable(0))
                     window.statusBarColor = Color.TRANSPARENT
-                    setTheme(R.style.Theme_Fido_Translucent)
+                    setTheme(org.microg.gms.base.core.R.style.Theme_Translucent)
                 }
             }
 
-            setTheme(R.style.Theme_AppCompat_DayNight_NoActionBar)
+            setTheme(androidx.appcompat.R.style.Theme_AppCompat_DayNight_NoActionBar)
             setContentView(R.layout.fido_authenticator_activity)
 
             lifecycleScope.launchWhenCreated {
@@ -154,14 +154,14 @@ class AuthenticatorActivity : AppCompatActivity(), TransportHandlerCallback {
                 val knownRegistrationTransports = mutableSetOf<Transport>()
                 val allowedTransports = mutableSetOf<Transport>()
                 if (options.type == RequestOptionsType.SIGN) {
-                    for (descriptor in options.signOptions.allowList) {
+                    for (descriptor in options.signOptions.allowList.orEmpty()) {
                         val knownTransport = database.getKnownRegistrationTransport(options.rpId, descriptor.id.toBase64(Base64.URL_SAFE, Base64.NO_WRAP, Base64.NO_PADDING))
                         if (knownTransport != null && knownTransport in IMPLEMENTED_TRANSPORTS)
                             knownRegistrationTransports.add(knownTransport)
                         if (descriptor.transports.isNullOrEmpty()) {
                             allowedTransports.addAll(Transport.values())
                         } else {
-                            for (transport in descriptor.transports) {
+                            for (transport in descriptor.transports.orEmpty()) {
                                 val allowedTransport = when (transport) {
                                     com.google.android.gms.fido.common.Transport.BLUETOOTH_CLASSIC -> BLUETOOTH
                                     com.google.android.gms.fido.common.Transport.BLUETOOTH_LOW_ENERGY -> BLUETOOTH
@@ -226,7 +226,13 @@ class AuthenticatorActivity : AppCompatActivity(), TransportHandlerCallback {
         }
         val id = rawId?.toBase64(Base64.URL_SAFE, Base64.NO_WRAP, Base64.NO_PADDING)
         if (rpId != null && id != null) database.insertKnownRegistration(rpId, id, transport)
-        finishWithCredential(PublicKeyCredential.Builder().setResponse(response).setRawId(rawId).setId(id).build())
+        finishWithCredential(PublicKeyCredential.Builder()
+            .setResponse(response)
+            .setRawId(rawId ?: ByteArray(0).also { Log.w(TAG, "rawId was null") })
+            .setId(id ?: "".also { Log.w(TAG, "id was null") })
+            .setAuthenticatorAttachment(if (transport == SCREEN_LOCK) "platform" else "cross-platform")
+            .build()
+        )
     }
 
     private fun finishWithCredential(publicKeyCredential: PublicKeyCredential) {

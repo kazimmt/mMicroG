@@ -22,7 +22,6 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -184,7 +183,7 @@ public class CastMediaRouteProvider extends MediaRouteProvider {
             return;
         }
 
-        mNsdManager = (NsdManager)context.getSystemService(Context.NSD_SERVICE);
+        mNsdManager = (NsdManager)context.getApplicationContext().getSystemService(Context.NSD_SERVICE);
 
         mDiscoveryListener = new NsdManager.DiscoveryListener() {
 

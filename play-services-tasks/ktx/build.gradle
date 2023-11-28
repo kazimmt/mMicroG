@@ -10,14 +10,16 @@ apply plugin: 'signing'
 
 dependencies {
     api project(":play-services-tasks")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
 }
 
 android {
-    compileSdk androidCompileSdk
-    // buildToolsVersion "$androidBuildVersionTools"
+    namespace "org.microg.gms.tasks.ktx"
+
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
         versionName version
@@ -30,14 +32,13 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17
+        jvmTarget = "1.8"
     }
-    namespace 'com.google.android.gms.tasks.ktx'
 }
 
 apply from: '../../gradle/publish-android.gradle'

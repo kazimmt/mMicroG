@@ -5,7 +5,6 @@
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
@@ -13,9 +12,9 @@ dependencies {
     implementation project(':play-services-cast')
     implementation project(':play-services-base-core')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
 
     // TODO: Switch to upstream once raw requests are merged
     // https://github.com/vitalidze/chromecast-java-api-v2/pull/99
@@ -24,8 +23,10 @@ dependencies {
 }
 
 android {
-    compileSdk androidCompileSdk
-    // buildToolsVersion "$androidBuildVersionTools"
+    namespace "org.microg.gms.cast.core"
+
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
         versionName version
@@ -46,14 +47,13 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17
+        jvmTarget = 1.8
     }
-    namespace 'com.google.android.gms.cast.core'
 }
 
 apply from: '../../gradle/publish-android.gradle'

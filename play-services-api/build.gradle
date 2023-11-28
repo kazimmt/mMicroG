@@ -17,22 +17,25 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdk androidCompileSdk
-    // buildToolsVersion "$androidBuildVersionTools"
+    namespace "org.microg.gms.api"
+
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion "$androidBuildVersionTools"
+
+    buildFeatures {
+        aidl = true
+    }
 
     defaultConfig {
+        versionName version
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
-    buildFeatures {
-        aidl true
-    }
-    namespace 'org.microg.gms.api'
 }
 
 dependencies {

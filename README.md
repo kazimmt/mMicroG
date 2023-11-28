@@ -5,18 +5,24 @@ A 1:1 version of [microG](https://github.com/microg/GmsCore) designed for ReVanc
 
 A big thanks to [Shadow578](https://github.com/shadow578) for its first implementation.
 
-<b>
+## Notable changes
 
-* Note 1: This repository was not created (and will not be maintained) with the cooperation of MicroG lead developer.
-
-* Note 2: No features or changes will be implemented that are not strictly related to the repository update.
-
-* Note 3: Where 'Play Services' version code values are stored?  ---><br />
-{<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;build.gradle (ext.appVersionCode)<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;play-services-droidguard-core.build.gradle (versionName)<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;play-services-basement (version.xml)<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RecaptchaClientImpl.kt (params.version)
-<br />}
-
-</b>
+- No longer a system app
+- Package name changed from `com.google.android.gms` to `com.mgoogle.android.gms` to support installation alongside the official MicroG
+- Removed unnecessary features:
+  - Ads
+  - Analytics
+  - Car
+  - Droidguard
+  - Exposure-Notifications
+  - Feedback
+  - Firebase
+  - Games
+  - Maps
+  - Recovery
+  - SafetyNet
+  - Search
+  - TapAndPay
+  - Wallet
+  - Wear-Api
+- Removed all permissions, as none are required for Google authentication

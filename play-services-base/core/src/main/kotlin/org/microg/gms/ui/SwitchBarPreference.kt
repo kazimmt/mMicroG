@@ -40,7 +40,7 @@ class SwitchBarPreference : TwoStatePreference {
         holder.itemView.setBackgroundColorAttribute(when {
             isChecked -> androidx.appcompat.R.attr.colorControlActivated
             isEnabled -> androidx.appcompat.R.attr.colorButtonNormal
-            else -> androidx.appcompat.R.attr.colorButtonNormal
+            else -> androidx.appcompat.R.attr.colorControlHighlight
         })
     }
 }

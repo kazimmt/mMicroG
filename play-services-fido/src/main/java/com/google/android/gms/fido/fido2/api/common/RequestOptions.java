@@ -8,25 +8,33 @@
 
 package com.google.android.gms.fido.fido2.api.common;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.gms.common.internal.safeparcel.AbstractSafeParcelable;
+import com.google.android.gms.common.internal.safeparcel.SafeParcelableSerializer;
 import org.microg.gms.common.PublicApi;
-import org.microg.safeparcel.AutoSafeParcelable;
-import org.microg.safeparcel.SafeParcelUtil;
 
 /**
  * An abstract class representing FIDO2 request options.
  */
 @PublicApi
-public abstract class RequestOptions extends AutoSafeParcelable {
+public abstract class RequestOptions extends AbstractSafeParcelable {
+    @NonNull
     public abstract byte[] getChallenge();
+    @Nullable
     public abstract Double getTimeoutSeconds();
+    @Nullable
     public abstract Integer getRequestId();
+    @Nullable
     public abstract TokenBinding getTokenBinding();
+    @Nullable
     public abstract AuthenticationExtensions getAuthenticationExtensions();
 
     /**
      * Serializes the {@link RequestOptions} to bytes. Use deserializeFromBytes(byte[]) to deserialize.
      */
+    @NonNull
     public byte[] serializeToBytes() {
-        return SafeParcelUtil.asByteArray(this);
+        return SafeParcelableSerializer.serializeToBytes(this);
     }
 }

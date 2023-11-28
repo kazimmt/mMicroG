@@ -30,7 +30,7 @@ import org.microg.gms.utils.WorkSourceUtil
 import java.io.PrintWriter
 import kotlin.math.max
 
-class LocationRequestManager(private val context: Context, override val lifecycle: Lifecycle, private val postProcessor: LocationPostProcessor, private val database: LocationAppsDatabase = LocationAppsDatabase(context), private val requestDetailsUpdatedCallback: () -> Unit) :
+class LocationRequestManager(private val context: Context, private val lifecycle: Lifecycle, private val postProcessor: LocationPostProcessor, private val database: LocationAppsDatabase = LocationAppsDatabase(context), private val requestDetailsUpdatedCallback: () -> Unit) :
     IBinder.DeathRecipient, LifecycleOwner {
     private val lock = Mutex()
     private val binderRequests = mutableMapOf<IBinder, LocationRequestHolder>()
@@ -45,6 +45,8 @@ class LocationRequestManager(private val context: Context, override val lifecycl
         private set
     private var requestDetailsUpdated = false
     private var checkingWhileHighAccuracy = false
+
+    override fun getLifecycle(): Lifecycle = lifecycle
 
     override fun binderDied() {
         lifecycleScope.launchWhenStarted {
@@ -362,7 +364,7 @@ class LocationRequestManager(private val context: Context, override val lifecycl
                     return request.priority
                 }
             val maxUpdateDelayMillis: Long
-                get() = max(request.maxUpdateDelayMillis, intervalMillis)
+                get() = max(max(request.maxUpdateDelayMillis, intervalMillis), 1000L)
             val intervalMillis: Long
                 get() = request.intervalMillis
             val updatesPending: Int
@@ -413,6 +415,7 @@ class LocationRequestManager(private val context: Context, override val lifecycl
 
             fun check() {
                 if (!context.checkAppOpForEffectiveGranularity(clientIdentity, effectiveGranularity)) throw RuntimeException("Lack of permission")
+                if (effectiveGranularity > permissionGranularity) throw RuntimeException("Lack of permission")
                 if (timePendingMillis < 0) throw RuntimeException("duration limit reached (active for ${(SystemClock.elapsedRealtime() - start).formatDuration()}, duration ${request.durationMillis.formatDuration()})")
                 if (updatesPending <= 0) throw RuntimeException("max updates reached")
                 if (callback?.asBinder()?.isBinderAlive == false) throw RuntimeException("Binder died")
@@ -424,7 +427,7 @@ class LocationRequestManager(private val context: Context, override val lifecycl
                 if (lastLocation != null && location.distanceTo(lastLocation!!) < request.minUpdateDistanceMeters) return false
                 if (lastLocation == location) return false
                 val returnedLocation = if (effectiveGranularity > permissionGranularity) {
-                    throw RuntimeException("lack of permission")
+                    throw RuntimeException("Lack of permission")
                 } else {
                     if (!context.noteAppOpForEffectiveGranularity(clientIdentity, effectiveGranularity)) {
                         throw RuntimeException("app op denied")

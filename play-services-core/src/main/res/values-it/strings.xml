@@ -15,7 +15,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="gms_app_name">microG Services Core</string>
+    <string name="gms_app_name">microG Services</string>
     <string name="gms_settings_name">Impostazioni di microG</string>
     <string name="gms_settings_summary">Configurazione di microG</string>
 
@@ -50,13 +50,6 @@ Questa operazione può richiedere alcuni secondi."</string>
     <string name="service_name_checkin">Registrazione del dispositivo</string>
     <string name="service_name_mcs">Messaggistica cloud</string>
     <string name="service_name_snet">SafetyNet</string>
-
-    <string name="service_status_disabled">Disabilitato</string>
-    <string name="service_status_enabled">Abilitato</string>
-    <string name="service_status_automatic">Automatico</string>
-    <string name="service_status_manual">Manuale</string>
-    <string name="service_status_enabled_short">Abilitato</string>
-    <string name="service_status_disabled_short">Disabilitato</string>
 
     <string name="games_title">Google Play Giochi</string>
     <string name="games_info_title"><xliff:g example="F-Droid">%1$s</xliff:g> vorrebbe utilizzare Play Giochi</string>

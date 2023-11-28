@@ -15,9 +15,9 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="gms_app_name">microG Services Core</string>
+    <string name="gms_app_name">microG Services</string>
     <string name="gms_settings_name">microG設定</string>
-    <string name="gms_settings_summary">microG services Coreの設定</string>
+    <string name="gms_settings_summary">microG servicesの設定</string>
 
     <string name="just_a_sec">しばらくお待ちください...</string>
     <string name="google_account_label">Google</string>
@@ -54,13 +54,6 @@
     <string name="service_name_checkin">Googleデバイス登録</string>
     <string name="service_name_mcs">Cloud Messaging</string>
 
-    <string name="service_status_disabled">無効</string>
-    <string name="service_status_enabled">有効</string>
-    <string name="service_status_automatic">自動</string>
-    <string name="service_status_manual">手動</string>
-    <string name="service_status_enabled_short">On</string>
-    <string name="service_status_disabled_short">Off</string>
-
     <string name="games_title">Google Play ゲーム</string>
     <string name="games_info_title"><xliff:g example="F-Droid">%1$s</xliff:g> が Play Gamesの使用を要求しています。</string>
     <string name="games_info_content">Play Gamesを使用するには、Google Play ゲーム アプリが必要です。 Google Playゲームアプリ無しでも続行できますが、予期しない動作をする可能性があります。</string>
@@ -71,7 +64,7 @@
     <string name="place_picker_nearby_places">近くの場所</string>
     <string name="place_picker_location_lat_lng">(%1$.7f, %2$.7f)</string>
 
-    <string name="lacking_permission_toast">microG Services Core: <xliff:g example="have full network acccess">%1$s</xliff:g>の許可がありません</string>
+    <string name="lacking_permission_toast">microG Services: <xliff:g example="have full network acccess">%1$s</xliff:g>の許可がありません</string>
 
     <string name="network_type_mobile">モバイルネットワーク</string>
     <string name="network_type_wifi">Wi-Fi</string>
@@ -113,7 +106,7 @@
     <string name="prefcat_test">テスト</string>
 
     <string name="cond_gcm_bat_title">バッテリーの最適化が有効です</string>
-    <string name="cond_gcm_bat_summary">Cloud Messagingが有効になっていますが、microG Service Coreのバッテリーの最適化が有効に設定されています。 プッシュ通知が正しく動作するためには、バッテリーの最適化を無効にする必要があります。</string>
+    <string name="cond_gcm_bat_summary">Cloud Messagingが有効になっていますが、microG Serviceのバッテリーの最適化が有効に設定されています。 プッシュ通知が正しく動作するためには、バッテリーの最適化を無効にする必要があります。</string>
     <string name="cond_gcm_bat_action">最適化無効</string>
     <string name="cond_perm_title">権限がありません</string>
 
@@ -142,7 +135,7 @@
     <string name="pref_gcm_confirm_new_apps_summary">プッシュ通知を受信する新しいアプリが登録される前に確認する</string>
     <string name="pref_gcm_ping_interval">Ping間隔: <xliff:g example="10 minutes">%1$s</xliff:g></string>
 
-    <string name="pref_about_title">microG Services Coreについて</string>
+    <string name="pref_about_title">microG Servicesについて</string>
     <string name="pref_about_summary">バージョン情報と使用したライブラリ</string>
 
     <string name="gcm_app_error_unregistering">登録解除中にエラーが発生しました</string>

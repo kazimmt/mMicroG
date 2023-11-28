@@ -8,8 +8,14 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 android {
-    compileSdk androidCompileSdk
-    // buildToolsVersion "$androidBuildVersionTools"
+    namespace "com.google.android.gms.nearby"
+
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion "$androidBuildVersionTools"
+
+    buildFeatures {
+        aidl = true
+    }
 
     defaultConfig {
         versionName version
@@ -18,8 +24,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 }
 
@@ -29,8 +35,8 @@ description = 'microG implementation of play-services-nearby'
 
 dependencies {
     // Dependencies from play-services-nearby:18.0.2
-    api 'androidx.collection:collection:1.2.0'
-    api 'androidx.core:core:1.10.1'
+    api "androidx.collection:collection:1.0.0"
+    api "androidx.core:core:1.0.0"
     api project(':play-services-base')
     api project(':play-services-basement')
     api project(':play-services-tasks')

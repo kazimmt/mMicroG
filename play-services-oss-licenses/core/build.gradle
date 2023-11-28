@@ -14,17 +14,15 @@ dependencies {
 }
 
 android {
-    compileSdk androidCompileSdk
-    // buildToolsVersion "$androidBuildVersionTools"
+    namespace "org.microg.gms.oss.licenses.core"
+
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
         versionName version
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
-
-        manifestPlaceholders = [
-                basePackageName: "$basePackageName"
-        ]
     }
 
     sourceSets {
@@ -38,8 +36,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = 1.8
     }
 }
 

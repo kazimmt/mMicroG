@@ -21,7 +21,7 @@ import com.google.android.gms.common.BuildConfig;
 public enum GmsService {
     UNKNOWN(-2),
     ANY(-1),
-    GAMES(1, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.games.service.START"),
+    GAMES(1, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.games.service.START", BuildConfig.BASE_PACKAGE_NAME + ".android.gms.games.internal.connect.service.START"),
     PLUS(2, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.plus.service.START", BuildConfig.BASE_PACKAGE_NAME + ".android.gms.plus.service.internal.START"),
     PANORAMA(3, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.panorama.service.START"),
     WALLET(4, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.wallet.service.BIND"),
@@ -108,6 +108,7 @@ public enum GmsService {
     INSTANT_APPS(121, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.instantapps.START"),
     CAST_FIRSTPATY(122, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.cast.firstparty.START"),
     AD_CACHE(123, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.ads.service.CACHE"),
+    SMS_RETRIEVER(126, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.auth.api.phone.service.SmsRetrieverApiService.START"),
     CRYPT_AUTH(129, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.auth.cryptauth.cryptauthservice.START"),
     DYNAMIC_LINKS(131, BuildConfig.BASE_PACKAGE_NAME + ".firebase.dynamiclinks.service.START"),
     FONTS(132, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.fonts.service.START"),
@@ -120,6 +121,7 @@ public enum GmsService {
     CONSTELLATION(155, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.constellation.service.START"),
     AUDIT(154, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.audit.service.START"),
     SYSTEM_UPDATE(157, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.update.START_API_SERVICE"),
+    MOBSTORE(160, BuildConfig.BASE_PACKAGE_NAME + ".android.mobstore.service.START"),
     USER_LOCATION(163, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.userlocation.service.START"),
     AD_HTTP(166, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.ads.service.HTTP"),
     LANGUAGE_PROFILE(167, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.languageprofile.service.START"),
@@ -135,6 +137,7 @@ public enum GmsService {
     APP_USAGE(193, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.appusage.service.START"),
     NEARBY_SHARING_2(194, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.nearby.sharing.START_SERVICE"),
     AD_CONSENT_LOOKUP(195, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.ads.service.CONSENT_LOOKUP"),
+    CREDENTIAL_MANAGER(196, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.credential.manager.service.firstparty.START"),
     PHONE_INTERNAL(197, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.auth.api.phone.service.InternalService.START"),
     PAY(198, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.pay.service.BIND"),
     ASTERISM(199, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.asterism.service.START"),
@@ -144,6 +147,7 @@ public enum GmsService {
     CONTACT_SYNC(208, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.people.contactssync.service.START"),
     IDENTITY_SIGN_IN(212, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.auth.api.identity.service.signin.START"),
     CREDENTIAL_STORE(214, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.fido.credentialstore.internal_service.START"),
+    MDI_SYNC(215, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.mdisync.service.START"),
     EVENT_ATTESTATION(216, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.ads.identifier.service.EVENT_ATTESTATION"),
     SCHEDULER(218, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.scheduler.ACTION_PROXY_SCHEDULE"),
     AUTHORIZATION(219, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.auth.api.identity.service.authorization.START"),
@@ -163,8 +167,10 @@ public enum GmsService {
     SECOND_DEVICE_AUTH(275, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.setup.auth.SecondDeviceAuth.START"),
     LOCATION_SHARING_REPORTER(277, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.locationsharingreporter.service.START"),
     OCR(279, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.ocr.service.START"),
+    POTOKENS(285, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.potokens.service.START"),
     OCR_INTERNAL(281, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.ocr.service.internal.START"),
-    IN_APP_REACH(315, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.inappreach.service.START")
+    IN_APP_REACH(315, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.inappreach.service.START"),
+    APP_ERRORS(334, BuildConfig.BASE_PACKAGE_NAME + ".android.gms.apperrors.service.START_APP_ERROR"),
     ;
 
     public int SERVICE_ID;

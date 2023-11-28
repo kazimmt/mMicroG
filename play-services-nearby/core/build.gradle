@@ -6,7 +6,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.squareup.wire'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
@@ -15,25 +14,27 @@ dependencies {
 
     implementation project(':play-services-base-core')
 
-    implementation "androidx.annotation:annotation:1.6.0"
-    implementation "androidx.lifecycle:lifecycle-service:2.6.1"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
-    implementation "androidx.preference:preference:1.2.0"
+    implementation "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.lifecycle:lifecycle-service:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    implementation "androidx.preference:preference:$preferenceVersion"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
 
-    implementation 'com.squareup.wire:wire-runtime:4.7.2'
+    implementation "com.squareup.wire:wire-runtime:$wireVersion"
 
     testImplementation 'junit:junit:4.13.2'
 }
 
 android {
-    compileSdk androidCompileSdk
-    // buildToolsVersion "$androidBuildVersionTools"
+    namespace "org.microg.gms.nearby.core"
+
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
         versionName version
@@ -56,8 +57,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = 1.8
     }
 }
 

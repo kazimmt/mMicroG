@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import org.microg.gms.settings.SettingsContract
 import org.microg.gms.settings.SettingsContract.CheckIn
-import org.microg.gms.settings.SettingsContract.setSettings
 
 object CheckinPreferences {
 
@@ -30,31 +29,4 @@ object CheckinPreferences {
         }
     }
 
-    @JvmStatic
-    fun isSpoofingEnabled(context: Context): Boolean? {
-        val projection = arrayOf(CheckIn.BRAND_SPOOF)
-        return CheckIn.getContentUri(context)?.let {
-            SettingsContract.getSettings(context, it, projection) { c ->
-                c.getInt(0) != 0
-            }
-        }
-    }
-
-    @JvmStatic
-    fun setSpoofingEnabled(context: Context, enabled: Boolean) {
-        CheckIn.getContentUri(context)?.let {
-            setSettings(context, it) {
-                put(CheckIn.BRAND_SPOOF, enabled)
-            }
-        }
-    }
-
-//    @JvmStatic
-//    fun hideLauncherIcon(context: Context, enabled: Boolean) {
-//        CheckIn.getContentUri(context)?.let {
-//            setSettings(context, it) {
-//                put(CheckIn.HIDE_LAUNCHER_ICON, enabled)
-//            }
-//        }
-//    }
 }

@@ -8,9 +8,9 @@ buildscript {
     ext.basePackageName = "com.mgoogle"
 
     ext.cronetVersion = '102.5005.125'
-    ext.safeParcelVersion = '1.7.1'
     ext.wearableVersion = '0.1.1'
 
+    ext.kotlinVersion = '1.7.22'
     ext.coroutineVersion = '1.6.4'
 
     ext.annotationVersion = '1.6.0'
@@ -30,16 +30,18 @@ buildscript {
 
     ext.slf4jVersion = '1.7.36'
     ext.volleyVersion = '1.2.1'
-    ext.wireVersion = '4.7.2'
+    ext.wireVersion = '4.8.0'
 
     ext.androidBuildGradleVersion = '8.0.2'
 
     ext.androidBuildVersionTools = '33.0.2'
 
-    ext.androidMinSdk = 23
-    ext.androidTargetSdk = 33
+    ext.androidMinSdk = 14
+    ext.androidTargetSdk = 29
     ext.androidCompileSdk = 33
 
+    ext.localProperties = new Properties()
+    
     ext.includeProjects = [
             ':play-services-base-core',
             ':play-services-cast-core',
@@ -48,19 +50,20 @@ buildscript {
             ':play-services-core-proto', // deprecated
             ':play-services-core:microg-ui-tools',
             ':play-services-api',
-//            ':play-services-tasks-ktx',
+            ':play-services-tasks-ktx',
             ':play-services-auth'
     ]
 
-    ext.excludes = [
-            '**/AppMeasurementDynamiteService.kt'
-    ]
-    ext.localProperties = new Properties()
-
     try {
-        ext.localProperties.load(rootProject.file('local.properties').newDataInputStream())
+        var stream = rootProject.file('local.properties').newDataInputStream()
+        ext.localProperties.load(stream)
+        stream.close()
     } catch (ignored) {
         // Ignore
+    }
+
+    ext.hasModule = (String name, boolean enabledByDefault) -> {
+        return ext.localProperties.getProperty("modules." + name, enabledByDefault.toString()).toBoolean()
     }
 
     repositories {
@@ -70,9 +73,8 @@ buildscript {
 
     dependencies {
         classpath "com.android.tools.build:gradle:$androidBuildGradleVersion"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "com.squareup.wire:wire-gradle-plugin:$wireVersion"
-//        classpath "com.github.kezong:fat-aar:1.3.8"
     }
 }
 
@@ -80,9 +82,9 @@ allprojects {
     apply plugin: 'idea'
 
     group = 'org.microg.gms'
-    ext.appVersionCode = 233217037
+    ext.appVersionCode = 234414013
     ext.baseVersion = ext.appVersionCode.toString()[0..1] + '.' + ext.appVersionCode.toString()[2..3] + '.' + ext.appVersionCode.toString()[4..5]
-    version = "0.2.28."+ext.baseVersion.replaceAll("\\.", "")
+    version = "0.3.0."+ext.baseVersion.replaceAll("\\.", "")
     ext.isReleaseVersion = false
 }
 
@@ -90,15 +92,6 @@ subprojects {
     repositories {
         mavenCentral()
         google()
-    }
-    afterEvaluate {
-        // Temporary hack for Android Studio
-        if (project.plugins.hasPlugin('com.android.base')) {
-            dependencies {
-                compileOnly "org.microg:safe-parcel:$safeParcelVersion"
-                testCompileOnly "org.microg:safe-parcel:$safeParcelVersion"
-            }
-        }
+        if (hasModule("hms", false)) maven {url 'https://developer.huawei.com/repo/'}
     }
 }
-

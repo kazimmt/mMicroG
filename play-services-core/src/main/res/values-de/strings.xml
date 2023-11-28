@@ -15,9 +15,9 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="gms_app_name">microG Services Core</string>
+    <string name="gms_app_name">microG Services</string>
     <string name="gms_settings_name">microG-Einstellungen</string>
-    <string name="gms_settings_summary">microG Services Core einrichten</string>
+    <string name="gms_settings_summary">microG Services einrichten</string>
 
     <string name="just_a_sec">Einen kurzen Moment…</string>
     <string name="google_account_label">Google</string>
@@ -59,13 +59,6 @@ Dies kann einige Minuten dauern."</string>
     <string name="service_name_mcs">Cloud Messaging</string>
     <string name="service_name_snet">Google SafetyNet</string>
 
-    <string name="service_status_disabled">Deaktiviert</string>
-    <string name="service_status_enabled">Aktiviert</string>
-    <string name="service_status_automatic">Automatisch</string>
-    <string name="service_status_manual">Manuell</string>
-    <string name="service_status_enabled_short">Ein</string>
-    <string name="service_status_disabled_short">Aus</string>
-
     <string name="games_title">Google Play Games</string>
     <string name="games_info_title"><xliff:g example="F-Droid">%1$s</xliff:g> möchte Play Games benutzen</string>
     <string name="games_info_content">Um Play Games zu nutzen, ist die Installation der Google Play Games App erforderlich. Diese App funktioniert eventuell auch ohne Play Games, verhält sich dabei unter Umständen aber ungewöhnlich.</string>
@@ -76,7 +69,7 @@ Dies kann einige Minuten dauern."</string>
     <string name="place_picker_nearby_places">Orte in der Nähe</string>
     <string name="place_picker_location_lat_lng">(%1$.7f, %2$.7f)</string>
 
-    <string name="lacking_permission_toast">microG Services Core: Berechtigung für "<xliff:g example="Auf alle Netzwerke zugreifen">%1$s</xliff:g>" fehlt</string>
+    <string name="lacking_permission_toast">microG Services: Berechtigung für "<xliff:g example="Auf alle Netzwerke zugreifen">%1$s</xliff:g>" fehlt</string>
 
     <string name="network_type_mobile">Mobiles Internet</string>
     <string name="network_type_wifi">WLAN</string>
@@ -152,7 +145,7 @@ Dies kann einige Minuten dauern."</string>
     <string name="pref_gcm_confirm_new_apps_summary">Frage nach, bevor neue Apps sich für Push-Nachrichten registrieren</string>
     <string name="pref_gcm_ping_interval">Abfrage-Intervall: <xliff:g example="10 minutes">%1$s</xliff:g></string>
 
-    <string name="pref_about_title">Über microG Services Core</string>
+    <string name="pref_about_title">Über microG Services</string>
     <string name="pref_about_summary">Versionsinformation und genutzte Bibliotheken</string>
     <string name="gcm_app_error_unregistering">Fehler bei der Abmeldung</string>
     <string name="gcm_app_not_installed_anymore">Nicht mehr installiert</string>

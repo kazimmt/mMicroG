@@ -23,7 +23,6 @@ import android.database.CharArrayBuffer;
 import android.database.Cursor;
 import android.database.CursorWindow;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 
@@ -37,6 +36,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.os.Build.VERSION.SDK_INT;
 
 /**
  * Class for accessing collections of data, organized into columns. This provides the backing
@@ -62,6 +63,8 @@ public class DataHolder extends AutoSafeParcelable implements Closeable {
 
     private boolean closed = false;
     private Map<String, Integer> columnIndices;
+    private int[] windowStartPositions;
+    private int count;
 
     protected static final int FIELD_TYPE_NULL = 0;
     protected static final int FIELD_TYPE_INTEGER = 1;
@@ -155,7 +158,7 @@ public class DataHolder extends AutoSafeParcelable implements Closeable {
     @SuppressWarnings("deprecation")
     @SuppressLint({"NewApi", "ObsoleteSdkInt"})
     static int getCursorType(Cursor cursor, int i) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        if (SDK_INT >= 11) {
             return cursor.getType(i);
         }
         if (cursor instanceof AbstractWindowedCursor) {
@@ -334,13 +337,15 @@ public class DataHolder extends AutoSafeParcelable implements Closeable {
      * @return the number of rows in the data holder.
      */
     public int getCount() {
-        int c = 0;
-        if (windows != null) {
-            for (CursorWindow window : windows) {
-                c += window.getNumRows();
-            }
-        }
-        return c;
+        return count;
+    }
+
+    public double getDouble(String column, int row, int windowIndex) {
+        return windows[windowIndex].getDouble(row, columnIndices.get(column));
+    }
+
+    public float getFloat(String column, int row, int windowIndex) {
+        return windows[windowIndex].getFloat(row, columnIndices.get(column));
     }
 
     /**
@@ -389,6 +394,10 @@ public class DataHolder extends AutoSafeParcelable implements Closeable {
         return windows[windowIndex].getString(row, columnIndices.get(column));
     }
 
+    public boolean hasColumn(String column) {
+        return columnIndices.values().contains(column);
+    }
+
     /**
      * Returns whether the given column at the provided position contains null.
      * This will throw an {@link IllegalArgumentException} if the column does not exist, the
@@ -399,7 +408,7 @@ public class DataHolder extends AutoSafeParcelable implements Closeable {
      * @param windowIndex Index of the cursor window to extract the data from.
      * @return Whether the column value is null at this position.
      */
-    public boolean isNull(String column, int row, int windowIndex) {
+    public boolean hasNull(String column, int row, int windowIndex) {
         return windows[windowIndex].isNull(row, columnIndices.get(column));
     }
 
@@ -440,6 +449,21 @@ public class DataHolder extends AutoSafeParcelable implements Closeable {
         for (int i = 0; i < columns.length; i++) {
             columnIndices.put(columns[i], i);
         }
+        windowStartPositions = new int[windows.length];
+        this.count = 0;
+        for (int windowIndex = 0; windowIndex < windows.length; windowIndex++) {
+            this.windowStartPositions[windowIndex] = this.count;
+            this.count += this.windows[windowIndex].getNumRows() - (this.count - windows[windowIndex].getStartPosition());
+        }
+    }
+
+    public int getWindowIndex(int row) {
+        if (row < 0 || row >= count) throw new IllegalArgumentException();
+        int windowIndex = 0;
+        for (; windowIndex < windowStartPositions.length; windowIndex++) {
+            if (row < windowStartPositions[windowIndex]) break;
+        }
+        return windowIndex-1;
     }
 
     /**

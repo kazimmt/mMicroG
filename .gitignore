@@ -11,5 +11,5 @@ local.properties
 .settings
 .classpath
 .project
-.json
-.apk
+*.apk
+play-services-core/default/release/

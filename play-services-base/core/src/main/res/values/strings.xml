@@ -7,7 +7,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="foreground_service_notification_title">Active in background</string>
     <string name="foreground_service_notification_text"><xliff:g example="Exposure Notification">%1$s</xliff:g> is running in background.</string>
-    <string name="foreground_service_notification_big_text">Exclude <xliff:g example="microG Services Core">%1$s</xliff:g> from battery optimizations or change notification settings to hide this notification.</string>
+    <string name="foreground_service_notification_big_text">Exclude <xliff:g example="microG Services">%1$s</xliff:g> from battery optimizations or change notification settings to hide this notification.</string>
 
     <string name="menu_advanced">Advanced</string>
 
@@ -15,4 +15,11 @@
     <string name="list_item_see_all">See all</string>
 
     <string name="open_app">Open</string>
+
+    <string name="service_status_disabled">Disabled</string>
+    <string name="service_status_enabled">Enabled</string>
+    <string name="service_status_automatic">Automatic</string>
+    <string name="service_status_manual">Manual</string>
+    <string name="service_status_enabled_short">On</string>
+    <string name="service_status_disabled_short">Off</string>
 </resources>

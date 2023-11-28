@@ -20,10 +20,15 @@ sourceSets {
     main.java.srcDirs += "$buildDir/generated/source/wire"
 }
 
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
 compileKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_17
+    kotlinOptions.jvmTarget = 1.8
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_17
+    kotlinOptions.jvmTarget = 1.8
 }

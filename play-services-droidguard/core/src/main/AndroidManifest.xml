@@ -4,8 +4,7 @@
   ~ SPDX-License-Identifier: Apache-2.0
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="org.microg.gms.droidguard.core">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,11 +13,11 @@
             android:name=".DroidGuardService"
             android:enabled="true"
             android:exported="true"
-            android:process="${basePackageName}.android.gms.unstable">
+            android:process="com.google.android.gms.unstable">
             <intent-filter>
-                <action android:name="${basePackageName}.android.gms.droidguard.service.INIT" />
-                <action android:name="${basePackageName}.android.gms.droidguard.service.PING" />
-                <action android:name="${basePackageName}.android.gms.droidguard.service.START" />
+                <action android:name="com.google.android.gms.droidguard.service.INIT" />
+                <action android:name="com.google.android.gms.droidguard.service.PING" />
+                <action android:name="com.google.android.gms.droidguard.service.START" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

@@ -16,14 +16,14 @@ dependencies {
     implementation project(':play-services-chimera-core')
     implementation project(':play-services-tasks-ktx')
 
-    implementation "androidx.appcompat:appcompat:1.6.1"
-    implementation "androidx.core:core-ktx:1.10.1"
-    implementation "androidx.preference:preference-ktx:1.2.0"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "androidx.core:core-ktx:$coreVersion"
+    implementation "androidx.preference:preference-ktx:$preferenceVersion"
 
-    implementation "com.android.volley:volley:1.2.1"
-    implementation 'com.squareup.wire:wire-runtime:4.7.2'
+    implementation "com.android.volley:volley:$volleyVersion"
+    implementation "com.squareup.wire:wire-runtime:$wireVersion"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 }
 
 wire {
@@ -31,21 +31,22 @@ wire {
 }
 
 android {
-    compileSdk androidCompileSdk
-    // buildToolsVersion "$androidBuildVersionTools"
+    namespace "org.microg.gms.droidguard.core"
+
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion "$androidBuildVersionTools"
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
-        versionName baseVersion
-        versionCode appVersionCode
+        versionName "20.47.14"
+        versionCode 204714000
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
         buildConfigField("String", "VERSION_NAME", "\"${defaultConfig.versionName}\"")
         buildConfigField("int", "VERSION_CODE", "${defaultConfig.versionCode}")
-
-        buildConfigField "String", "BASE_PACKAGE_NAME", "\"$basePackageName\""
-        manifestPlaceholders = [
-                basePackageName: "$basePackageName"
-        ]
     }
 
     sourceSets {
@@ -57,12 +58,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17
+        jvmTarget = 1.8
     }
 }
 

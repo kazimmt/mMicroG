@@ -25,7 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/colorBackground"
-        android:divider="?attr/dividerHorizontal"
         android:orientation="vertical"
         android:showDividers="middle">
 
@@ -51,7 +50,7 @@
 
             <TextView
                 android:id="@+id/permission_message"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/gcm_allow_app_popup"
@@ -64,28 +63,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="?attr/dividerHorizontal"
-            android:orientation="vertical"
-            android:showDividers="middle">
+            android:orientation="vertical">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/permission_allow_button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:background="?android:attr/selectableItemBackground"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text="@string/allow">
-            </Button>
+            </com.google.android.material.button.MaterialButton>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/permission_deny_button"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:background="?android:attr/selectableItemBackground"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text="@string/deny">
-            </Button>
+            </com.google.android.material.button.MaterialButton>
 
         </LinearLayout>
 

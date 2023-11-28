@@ -6,7 +6,7 @@
 package org.microg.gms.fido.core.transport.screenlock
 
 import android.app.KeyguardManager
-import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.biometric.BiometricPrompt
@@ -134,7 +134,7 @@ class ScreenLockTransportHandler(private val activity: FragmentActivity, callbac
             NoneAttestationObject(authenticatorData)
         } else {
             try {
-                if (Build.VERSION.SDK_INT >= 24) {
+                if (SDK_INT >= 24) {
                     createAndroidKeyAttestation(signature, authenticatorData, clientDataHash, options.rpId, keyId)
                 } else {
                     createSafetyNetAttestation(authenticatorData, clientDataHash)
@@ -148,7 +148,8 @@ class ScreenLockTransportHandler(private val activity: FragmentActivity, callbac
         return AuthenticatorAttestationResponse(
             credentialId.encode(),
             clientData,
-            attestationObject.encode()
+            attestationObject.encode(),
+            arrayOf("internal")
         )
     }
 
@@ -190,7 +191,7 @@ class ScreenLockTransportHandler(private val activity: FragmentActivity, callbac
     ): AuthenticatorAssertionResponse {
         if (options.type != RequestOptionsType.SIGN) throw RequestHandlingException(ErrorCode.INVALID_STATE_ERR)
         val candidates = mutableListOf<CredentialId>()
-        for (descriptor in options.signOptions.allowList) {
+        for (descriptor in options.signOptions.allowList.orEmpty()) {
             try {
                 val (type, data) = CredentialId.decodeTypeAndData(descriptor.id)
                 if (type == 1.toByte() && store.containsKey(options.rpId, data)) {
@@ -237,7 +238,7 @@ class ScreenLockTransportHandler(private val activity: FragmentActivity, callbac
 
     override fun shouldBeUsedInstantly(options: RequestOptions): Boolean {
         if (options.type != RequestOptionsType.SIGN) return false
-        for (descriptor in options.signOptions.allowList) {
+        for (descriptor in options.signOptions.allowList.orEmpty()) {
             try {
                 val (type, data) = CredentialId.decodeTypeAndData(descriptor.id)
                 if (type == 1.toByte() && store.containsKey(options.rpId, data)) {

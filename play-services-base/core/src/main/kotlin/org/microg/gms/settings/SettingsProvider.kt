@@ -13,18 +13,17 @@ import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
+import android.os.Build.VERSION.SDK_INT
 import android.preference.PreferenceManager
 import org.microg.gms.common.PackageUtils.warnIfNotMainProcess
 import org.microg.gms.settings.SettingsContract.Auth
 import org.microg.gms.settings.SettingsContract.CheckIn
-//import org.microg.gms.settings.SettingsContract.DroidGuard
-//import org.microg.gms.settings.SettingsContract.Exposure
 import org.microg.gms.settings.SettingsContract.Gcm
-//import org.microg.gms.settings.SettingsContract.Location
 import org.microg.gms.settings.SettingsContract.Profile
-//import org.microg.gms.settings.SettingsContract.SafetyNet
 import org.microg.gms.settings.SettingsContract.getAuthority
 import java.io.File
+
+private const val SETTINGS_PREFIX = "org.microg.gms.settings."
 
 /**
  * All settings access should go through this [ContentProvider],
@@ -38,6 +37,9 @@ class SettingsProvider : ContentProvider() {
     private val checkInPrefs by lazy {
         context!!.getSharedPreferences(CheckIn.PREFERENCES_NAME, MODE_PRIVATE)
     }
+    private val unifiedNlpPreferences by lazy {
+        context!!.getSharedPreferences("unified_nlp", MODE_PRIVATE)
+    }
     private val systemDefaultPreferences: SharedPreferences? by lazy {
         try {
             Context::class.java.getDeclaredMethod(
@@ -48,6 +50,9 @@ class SettingsProvider : ContentProvider() {
         } catch (ignored: Exception) {
             null
         }
+    }
+    private val metaDataPreferences: SharedPreferences by lazy {
+        MetaDataPreferences(context!!, SETTINGS_PREFIX)
     }
 
     override fun onCreate(): Boolean {
@@ -64,11 +69,7 @@ class SettingsProvider : ContentProvider() {
         CheckIn.getContentUri(context!!) -> queryCheckIn(projection ?: CheckIn.PROJECTION)
         Gcm.getContentUri(context!!) -> queryGcm(projection ?: Gcm.PROJECTION)
         Auth.getContentUri(context!!) -> queryAuth(projection ?: Auth.PROJECTION)
-//        Exposure.getContentUri(context!!) -> queryExposure(projection ?: Exposure.PROJECTION)
-//        SafetyNet.getContentUri(context!!) -> querySafetyNet(projection ?: SafetyNet.PROJECTION)
-//        DroidGuard.getContentUri(context!!) -> queryDroidGuard(projection ?: DroidGuard.PROJECTION)
         Profile.getContentUri(context!!) -> queryProfile(projection ?: Profile.PROJECTION)
-//        Location.getContentUri(context!!) -> queryLocation(projection ?: Location.PROJECTION)
         else -> null
     }
 
@@ -100,7 +101,6 @@ class SettingsProvider : ContentProvider() {
             CheckIn.SECURITY_TOKEN -> checkInPrefs.getLong(key, 0)
             CheckIn.VERSION_INFO -> checkInPrefs.getString(key, "") ?: ""
             CheckIn.DEVICE_DATA_VERSION_INFO -> checkInPrefs.getString(key, "") ?: ""
-            CheckIn.BRAND_SPOOF -> getSettingsBoolean(key, false)
             else -> throw IllegalArgumentException()
         }
     }
@@ -118,10 +118,6 @@ class SettingsProvider : ContentProvider() {
                 // special case: not saved in checkInPrefs
                 updateCheckInEnabled(value as Boolean)
             }
-            if (key == CheckIn.BRAND_SPOOF) {
-                // special case: not saved in checkInPrefs
-                updateSpoofingEnabled(value as Boolean)
-            }
             when (key) {
                 CheckIn.ANDROID_ID -> editor.putLong(key, value as Long)
                 CheckIn.DIGEST -> editor.putString(key, value as String?)
@@ -137,12 +133,6 @@ class SettingsProvider : ContentProvider() {
     private fun updateCheckInEnabled(enabled: Boolean) {
         preferences.edit()
             .putBoolean(CheckIn.ENABLED, enabled)
-            .apply()
-    }
-
-    private fun updateSpoofingEnabled(enabled: Boolean) {
-        preferences.edit()
-            .putBoolean(CheckIn.BRAND_SPOOF, enabled)
             .apply()
     }
 
@@ -197,6 +187,7 @@ class SettingsProvider : ContentProvider() {
         when (key) {
             Auth.TRUST_GOOGLE -> getSettingsBoolean(key, true)
             Auth.VISIBLE -> getSettingsBoolean(key, false)
+            Auth.INCLUDE_ANDROID_ID -> getSettingsBoolean(key, true)
             else -> throw IllegalArgumentException("Unknown key: $key")
         }
     }
@@ -208,74 +199,12 @@ class SettingsProvider : ContentProvider() {
             when (key) {
                 Auth.TRUST_GOOGLE -> editor.putBoolean(key, value as Boolean)
                 Auth.VISIBLE -> editor.putBoolean(key, value as Boolean)
+                Auth.INCLUDE_ANDROID_ID -> editor.putBoolean(key, value as Boolean)
                 else -> throw IllegalArgumentException("Unknown key: $key")
             }
         }
         editor.apply()
     }
-
-//    private fun queryExposure(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
-//        when (key) {
-//            Exposure.SCANNER_ENABLED -> getSettingsBoolean(key, false)
-//            Exposure.LAST_CLEANUP -> preferences.getLong(key, 0L)
-//            else -> throw IllegalArgumentException("Unknown key: $key")
-//        }
-//    }
-//
-//    private fun updateExposure(values: ContentValues) {
-//        if (values.size() == 0) return
-//        val editor = preferences.edit()
-//        values.valueSet().forEach { (key, value) ->
-//            when (key) {
-//                Exposure.SCANNER_ENABLED -> editor.putBoolean(key, value as Boolean)
-//                Exposure.LAST_CLEANUP -> editor.putLong(key, value as Long)
-//                else -> throw IllegalArgumentException("Unknown key: $key")
-//            }
-//        }
-//        editor.apply()
-//    }
-//
-//    private fun querySafetyNet(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
-//        when (key) {
-//            SafetyNet.ENABLED -> getSettingsBoolean(key, false)
-//            else -> throw IllegalArgumentException("Unknown key: $key")
-//        }
-//    }
-//
-//    private fun updateSafetyNet(values: ContentValues) {
-//        if (values.size() == 0) return
-//        val editor = preferences.edit()
-//        values.valueSet().forEach { (key, value) ->
-//            when (key) {
-//                SafetyNet.ENABLED -> editor.putBoolean(key, value as Boolean)
-//                else -> throw IllegalArgumentException("Unknown key: $key")
-//            }
-//        }
-//        editor.apply()
-//    }
-//
-//    private fun queryDroidGuard(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
-//        when (key) {
-//            DroidGuard.ENABLED -> getSettingsBoolean(key, false)
-//            DroidGuard.MODE -> getSettingsString(key)
-//            DroidGuard.NETWORK_SERVER_URL -> getSettingsString(key)
-//            else -> throw IllegalArgumentException("Unknown key: $key")
-//        }
-//    }
-//
-//    private fun updateDroidGuard(values: ContentValues) {
-//        if (values.size() == 0) return
-//        val editor = preferences.edit()
-//        values.valueSet().forEach { (key, value) ->
-//            when (key) {
-//                DroidGuard.ENABLED -> editor.putBoolean(key, value as Boolean)
-//                DroidGuard.MODE -> editor.putString(key, value as String)
-//                DroidGuard.NETWORK_SERVER_URL -> editor.putString(key, value as String)
-//                else -> throw IllegalArgumentException("Unknown key: $key")
-//            }
-//        }
-//        editor.apply()
-//    }
 
     private fun queryProfile(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
         when (key) {
@@ -297,29 +226,6 @@ class SettingsProvider : ContentProvider() {
         }
         editor.apply()
     }
-
-//    private fun queryLocation(p: Array<out String>): Cursor = MatrixCursor(p).addRow(p) { key ->
-//        when (key) {
-//            Location.WIFI_MLS -> getSettingsBoolean(key, true)
-//            Location.WIFI_MOVING -> getSettingsBoolean(key, true)
-//            Location.CELL_MLS -> getSettingsBoolean(key, true)
-//            else -> throw IllegalArgumentException("Unknown key: $key")
-//        }
-//    }
-//
-//    private fun updateLocation(values: ContentValues) {
-//        if (values.size() == 0) return
-//        val editor = preferences.edit()
-//        values.valueSet().forEach { (key, value) ->
-//            when (key) {
-//                Location.WIFI_MLS -> editor.putBoolean(key, value as Boolean)
-//                Location.WIFI_MOVING -> editor.putBoolean(key, value as Boolean)
-//                Location.CELL_MLS -> editor.putBoolean(key, value as Boolean)
-//                else -> throw IllegalArgumentException("Unknown key: $key")
-//            }
-//        }
-//        editor.apply()
-//    }
 
     private fun MatrixCursor.addRow(
         p: Array<out String>,
@@ -348,13 +254,33 @@ class SettingsProvider : ContentProvider() {
      * @return the current setting as [Int], because [ContentProvider] does not support [Boolean].
      */
     private fun getSettingsBoolean(key: String, def: Boolean): Int {
-        return listOf(preferences, systemDefaultPreferences).getBooleanAsInt(key, def)
+        return listOf(preferences, systemDefaultPreferences, metaDataPreferences).getBooleanAsInt(key, def)
     }
 
-    private fun getSettingsString(key: String, def: String? = null): String? = listOf(preferences, systemDefaultPreferences).getString(key, def)
-//    private fun getSettingsInt(key: String, def: Int): Int = listOf(preferences, systemDefaultPreferences).getInt(key, def)
-//    private fun getSettingsLong(key: String, def: Long): Long = listOf(preferences, systemDefaultPreferences).getLong(key, def)
+    private fun getSettingsString(key: String, def: String? = null): String? = listOf(preferences, systemDefaultPreferences, metaDataPreferences).getString(key, def)
+    private fun getSettingsInt(key: String, def: Int): Int = listOf(preferences, systemDefaultPreferences, metaDataPreferences).getInt(key, def)
+    private fun getSettingsLong(key: String, def: Long): Long = listOf(preferences, systemDefaultPreferences, metaDataPreferences).getLong(key, def)
+    private fun getUnifiedNlpSettingsStringSetCompat(key: String, def: Set<String>): Set<String> = listOf(unifiedNlpPreferences, preferences, systemDefaultPreferences).getStringSetCompat(key, def)
 
+    private fun SharedPreferences.getStringSetCompat(key: String, def: Set<String>): Set<String> {
+        if (SDK_INT >= 11) {
+            try {
+                val res = getStringSet(key, null)
+                if (res != null) return res.filter { it.isNotEmpty() }.toSet()
+            } catch (ignored: Exception) {
+                // Ignore
+            }
+        }
+        try {
+            val str = getString(key, null)
+            if (str != null) return str.split("\\|".toRegex()).filter { it.isNotEmpty() }.toSet()
+        } catch (ignored: Exception) {
+            // Ignore
+        }
+        return def
+    }
+
+    private fun List<SharedPreferences?>.getStringSetCompat(key: String, def: Set<String>): Set<String> = foldRight(def) { preferences, defValue -> preferences?.getStringSetCompat(key, defValue) ?: defValue }
     private fun List<SharedPreferences?>.getString(key: String, def: String?): String? = foldRight(def) { preferences, defValue -> preferences?.getString(key, defValue) ?: defValue }
     private fun List<SharedPreferences?>.getInt(key: String, def: Int): Int = foldRight(def) { preferences, defValue -> preferences?.getInt(key, defValue) ?: defValue }
     private fun List<SharedPreferences?>.getLong(key: String, def: Long): Long = foldRight(def) { preferences, defValue -> preferences?.getLong(key, defValue) ?: defValue }

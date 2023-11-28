@@ -33,7 +33,7 @@ private const val TAG = "RecaptchaService"
 class RecaptchaService : BaseService(TAG, GmsService.RECAPTCHA) {
     private fun getRecaptchaImpl(packageName: String) = when {
         SafetyNetPreferences.isEnabled(this) && SDK_INT >= 19 -> RecaptchaWebImpl(this, packageName, lifecycle)
-        DroidGuardPreferences.isEnabled(this) -> RecaptchaGuardImpl(this, packageName)
+        DroidGuardPreferences.isAvailable(this) -> RecaptchaGuardImpl(this, packageName)
         else -> RecaptchaImpl.Unsupported
     }
 
@@ -58,9 +58,13 @@ class RecaptchaService : BaseService(TAG, GmsService.RECAPTCHA) {
 class RecaptchaServiceImpl(
     private val context: Context,
     private val packageName: String,
-    override val lifecycle: Lifecycle,
+    private val lifecycle: Lifecycle,
     private val impl: RecaptchaImpl
 ) : IRecaptchaService.Stub(), LifecycleOwner {
+
+    override fun getLifecycle(): Lifecycle {
+        return lifecycle
+    }
 
     override fun verifyWithRecaptcha(callback: IExecuteCallback, siteKey: String, packageName: String) {
         Log.d(TAG, "Not yet implemented: verifyWithRecaptcha($siteKey, $packageName)")

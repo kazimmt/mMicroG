@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2013-2019 microG Project Team
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,23 +17,29 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <permission
+        android:name="${basePackageName}.android.providers.gsf.permission.READ_GSERVICES"
+        android:label="@string/perm_gsf_read_gservices_label"
+        android:protectionLevel="normal" />
+    <permission
         android:name="${basePackageName}.android.c2dm.permission.RECEIVE"
         android:label="@string/perm_c2dm_receive_label"
+        android:permissionGroup="android.permission-group.NETWORK"
         android:protectionLevel="normal" />
     <permission
         android:name="${basePackageName}.android.c2dm.permission.SEND"
         android:label="@string/perm_c2dm_send_label"
+        android:permissionGroup="android.permission-group.NETWORK"
         android:protectionLevel="privileged|signature" />
     <permission
         android:name="${basePackageName}.android.gtalkservice.permission.GTALK_SERVICE"
         android:label="@string/perm_gtalk_svc_label"
-        android:permissionGroup="android.permission-group.SMS"
+        android:permissionGroup="android.permission-group.MESSAGES"
         android:protectionLevel="signature" />
 
     <permission-tree
         android:name="${basePackageName}.android.googleapps.permission.GOOGLE_AUTH"
         android:icon="@drawable/proprietary_auth_ic_scope_icon_default" />
-
+        
     <permission
         android:name="${basePackageName}.gms.STATUS_BROADCAST"
         android:label="@string/perm_status_broadcast_label"
@@ -43,8 +48,6 @@
         android:name="${basePackageName}.gms.EXTENDED_ACCESS"
         android:label="@string/perm_extended_access_label"
         android:protectionLevel="dangerous" />
-
-    <uses-permission android:name="android.permission.FAKE_PACKAGE_SIGNATURE" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -82,16 +85,14 @@
         android:allowBackup="true"
         android:forceQueryable="true"
         android:fullBackupOnly="true"
-        android:icon="@mipmap/ic_core_service_app"
+        android:icon="@mipmap/ic_app"
+        android:roundIcon="@mipmap/ic_app"
         android:label="@string/gms_app_name"
         android:multiArch="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
 
         <library android:name="${basePackageName}.android.gms" />
-
-        <meta-data
-            android:name="fake-signature"
-            android:value="@string/fake_signature" />
 
         <!-- Services Framework -->
 
@@ -106,15 +107,13 @@
 
         <!-- Device Checkin -->
 
-        <service android:name="org.microg.gms.checkin.CheckinService"
-            android:exported="true">
+        <service android:name="org.microg.gms.checkin.CheckinService">
             <intent-filter>
                 <action android:name="com.google.android.gms.checkin.BIND_TO_SERVICE" />
             </intent-filter>
         </service>
 
-        <receiver android:name="org.microg.gms.checkin.TriggerReceiver"
-            android:exported="true">
+        <receiver android:name="org.microg.gms.checkin.TriggerReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.AIRPLANE_MODE" />
@@ -132,7 +131,6 @@
             <intent-filter>
                 <action android:name="android.provider.Telephony.SECRET_CODE" />
 
-                <!-- *#*#MGCHECKIN#*#* -->
                 <data
                     android:host="642432546"
                     android:scheme="android_secret_code" />
@@ -142,7 +140,6 @@
         <!-- Cloud Messaging -->
         <service
             android:name="org.microg.gms.gcm.PushRegisterService"
-            android:exported="true"
             android:process=":persistent">
             <intent-filter>
                 <action android:name="${basePackageName}.android.c2dm.intent.REGISTER" />
@@ -154,7 +151,6 @@
 
         <receiver
             android:name="org.microg.gms.gcm.PushRegisterReceiver"
-            android:exported="true"
             android:process=":persistent">
             <intent-filter>
                 <action android:name="${basePackageName}.iid.TOKEN_REQUEST" />
@@ -167,7 +163,6 @@
 
         <receiver
             android:name="org.microg.gms.gcm.SendReceiver"
-            android:exported="true"
             android:process=":persistent">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gcm.intent.SEND" />
@@ -180,7 +175,6 @@
 
         <receiver
             android:name="org.microg.gms.gcm.TriggerReceiver"
-            android:exported="true"
             android:process=":persistent">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -204,7 +198,6 @@
 
         <receiver
             android:name="org.microg.gms.gcm.UnregisterReceiver"
-            android:exported="true"
             android:process=":persistent">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_DATA_CLEARED" />
@@ -215,10 +208,29 @@
             </intent-filter>
         </receiver>
 
+        <!-- People -->
+
+        <service android:name="org.microg.gms.people.PeopleService">
+            <intent-filter>
+                <action android:name="com.google.android.gms.people.service.START" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="org.microg.gms.people.ContactSyncService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/contact_syncadapter" />
+        </service>
+
         <!-- Auth -->
 
-        <service android:name="org.microg.gms.auth.loginservice.GoogleLoginService"
-            android:exported="true">
+        <service android:name="org.microg.gms.auth.loginservice.GoogleLoginService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -259,6 +271,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="org.microg.gms.auth.AskPermissionActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:process=":ui"
+            android:theme="@style/AppTheme.Dialog" />
+
         <service
             android:name=".auth.GetToken"
             android:exported="true" />
@@ -275,7 +294,6 @@
 
         <activity
             android:name="org.microg.gms.auth.credentials.CredentialPickerActivity"
-            android:exported="true"
             android:process=":ui">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.auth.api.credentials.PICKER" />
@@ -283,62 +301,104 @@
             </intent-filter>
         </activity>
 
-        <service android:name="org.microg.gms.auth.credentials.CredentialsService"
-            android:exported="true">
+        <service android:name="org.microg.gms.auth.credentials.CredentialsService">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.auth.api.credentials.service.START" />
             </intent-filter>
         </service>
 
-        <service android:name="org.microg.gms.auth.proxy.AuthProxyService"
-            android:exported="true">
+        <service android:name="org.microg.gms.auth.proxy.AuthProxyService">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.auth.service.START" />
             </intent-filter>
         </service>
 
-        <service android:name="org.microg.gms.auth.appcert.AppCertService"
-            android:exported="true">
+        <service android:name="org.microg.gms.auth.appcert.AppCertService">
             <intent-filter>
                 <action android:name="${basePackageName}.android.gms.auth.be.appcert.AppCertService" />
             </intent-filter>
         </service>
 
-        <!-- microG Settings shown in Launcher -->
+        <service android:name="org.microg.gms.credential.CredentialManagerService">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.credential.manager.service.firstparty.START" />
+            </intent-filter>
+        </service>
+
         <activity
-            android:name="org.microg.gms.ui.SettingsActivity"
-            android:icon="@mipmap/ic_microg_settings"
-            android:label="@string/gms_settings_name"
-            android:exported="true"
+            android:name="org.microg.gms.auth.signin.AuthSignInActivity"
+            android:theme="@style/AppTheme.Dialog"
             android:process=":ui"
-            android:roundIcon="@mipmap/ic_microg_settings"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.auth.GOOGLE_SIGN_IN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <service android:name="org.microg.gms.signin.SignInService">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.signin.service.START" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <service android:name="org.microg.gms.auth.signin.AuthSignInService">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.auth.api.signin.service.START" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="org.microg.gms.auth.signin.SignInConfigurationService"
+            android:exported="false" />
+
+
+        <!-- microG Settings activity -->
+        <activity
+            android:name="org.microg.gms.ui.MainSettingsActivity"
+            android:icon="@mipmap/ic_app_settings"
+            android:label="@string/gms_settings_name"
+            android:process=":ui"
+            android:roundIcon="@mipmap/ic_app_settings"
             android:taskAffinity="org.microg.gms.settings">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
+        <!-- Allow microG Settings from opening by other applications -->
+        <activity-alias
+            android:name="org.microg.gms.ui.SettingsActivity"
+            android:icon="@mipmap/ic_app_settings"
+            android:label="@string/gms_settings_name"
+            android:roundIcon="@mipmap/ic_app_settings"
+            android:process=":ui"
+            android:targetActivity="org.microg.gms.ui.MainSettingsActivity"
+            android:taskAffinity="org.microg.gms.settings">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity-alias>
+
         <activity
             android:name="org.microg.gms.ui.SettingsDashboardActivity"
-            android:icon="@mipmap/ic_microg_settings"
+            android:icon="@mipmap/ic_app_settings"
             android:label="Legacy microG Settings"
             android:process=":ui"
-            android:roundIcon="@mipmap/ic_microg_settings"
+            android:roundIcon="@mipmap/ic_app_settings"
             android:taskAffinity="org.microg.gms.settings" />
 
         <!-- microG Settings embedded in System Settings on SDK 23 and newer -->
         <activity-alias
             android:name="org.microg.gms.ui.SettingsActivityLink"
-            android:exported="true"
-            android:icon="@drawable/microg_light_color_24"
+            android:icon="@drawable/ic_app_settings_foreground_mono"
             android:label="@string/gms_settings_name"
             android:process=":ui"
-            android:targetActivity="org.microg.gms.ui.SettingsActivity"
+            android:targetActivity="org.microg.gms.ui.MainSettingsActivity"
             android:taskAffinity="org.microg.gms.settings">
             <intent-filter>
                 <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
@@ -355,17 +415,20 @@
                 android:resource="@string/gms_settings_summary" />
         </activity-alias>
 
+        <!-- microG Settings activity-alias for Google settings compatibility -->
+        <activity-alias
+            android:name="com.google.android.gms.app.settings.GoogleSettingsLink"
+            android:process=":ui"
+            android:exported="true"
+            android:targetActivity="org.microg.gms.ui.MainSettingsActivity"
+            android:taskAffinity="org.microg.gms.settings">
+        </activity-alias>
+
         <activity
             android:name="org.microg.gms.ui.AskPushPermission"
             android:excludeFromRecents="true"
             android:process=":ui"
-            android:theme="@style/Theme.AppCompat.DayNight.Dialog.Alert.NoActionBar" />
-
-        <activity
-            android:name="org.microg.gms.ui.GoogleMoreFragment$AsActivity"
-            android:label="@string/gms_settings_name"
-            android:process=":ui"
-            android:taskAffinity="org.microg.gms.settings" />
+            android:theme="@style/AppTheme.Dialog" />
 
         <activity
             android:name="org.microg.gms.ui.SelfCheckFragment$AsActivity"
@@ -374,34 +437,46 @@
             android:taskAffinity="org.microg.gms.settings" />
 
         <activity
-            android:name="org.microg.gms.ui.AccountSettingsActivity"
-            android:exported="true"
+            android:name="org.microg.gms.ui.LegacyAccountSettingsActivity"
             android:process=":ui"
-            android:taskAffinity="org.microg.gms.settings">
+            android:taskAffinity="org.microg.gms.settings"></activity>
+
+        <activity
+            android:name="org.microg.gms.accountsettings.ui.MainActivity"
+            android:process=":ui"
+            android:exported="false"
+            android:taskAffinity="org.microg.gms.settings"
+            android:theme="@style/AppTheme.Dialog">
             <intent-filter>
-                <action android:name="com.google.android.gms.accountsettings.ACCOUNT_PREFERENCES_SETTINGS" />
-                <action android:name="com.google.android.gms.accountsettings.PRIVACY_SETTINGS" />
-                <action android:name="com.google.android.gms.accountsettings.SECURITY_SETTINGS" />
-                <action android:name="com.google.android.gms.accountsettings.action.VIEW_SETTINGS" />
+                <action android:name="${basePackageName}.android.gms.accountsettings.MY_ACCOUNT" />
+                <action android:name="${basePackageName}.android.gms.accountsettings.ACCOUNT_PREFERENCES_SETTINGS" />
+                <action android:name="${basePackageName}.android.gms.accountsettings.PRIVACY_SETTINGS" />
+                <action android:name="${basePackageName}.android.gms.accountsettings.SECURITY_SETTINGS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="org.microg.gms.accountsettings.ui.LoaderActivity"
+            android:process=":ui"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:theme="@style/AppTheme.Dialog">
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.accountsettings.action.VIEW_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="${basePackageName}.android.gms.accountsettings.action.BROWSE_SETTINGS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+
         <!-- Other -->
 
-        <service android:name="org.microg.gms.icing.LightweightIndexService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.android.gms.icing.LIGHTWEIGHT_INDEX_SERVICE" />
-            </intent-filter>
-        </service>
-        <service android:name="org.microg.gms.icing.IndexService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.android.gms.icing.INDEX_SERVICE" />
-            </intent-filter>
-        </service>
         <service android:name="org.microg.gms.auth.SignInService"
             android:exported="true">
             <intent-filter>
@@ -410,22 +485,19 @@
             </intent-filter>
         </service>
 
-        <service android:name="org.microg.gms.DummyService"
-            android:exported="true">
+        <service android:name="org.microg.gms.DummyService">
             <intent-filter>
                 <action android:name="com.google.android.contextmanager.service.ContextManagerService.START" />
                 <action android:name="com.google.android.gms.accounts.ACCOUNT_SERVICE" />
-                <action android:name="com.google.android.gms.ads.identifier.service.EVENT_ATTESTATION" />
-                <action android:name="com.google.android.gms.audit.service.START" />
                 <action android:name="com.google.android.gms.auth.service.START" />
                 <action android:name="com.google.android.gms.cast.firstparty.START" />
                 <action android:name="com.google.android.gms.cast_mirroring.service.START" />
                 <action android:name="com.google.android.gms.cast.remote_display.service.START" />
                 <action android:name="com.google.android.gms.auth.api.credentials.service.START" />
                 <action android:name="com.google.android.gms.common.service.START" />
-                <action android:name="com.google.android.gms.gass.START" />
                 <action android:name="com.google.android.gms.identity.service.BIND" />
             </intent-filter>
         </service>
     </application>
+
 </manifest>

@@ -89,7 +89,7 @@ public class CheckinClient {
                 .checkin(new CheckinRequest.Checkin.Builder()
                         .build(new CheckinRequest.Checkin.Build.Builder()
                                 .bootloader(brandSpoof ? "c2f2-0.2-5799621" : Build.BOOTLOADER)
-                                .brand(brandSpoof ? "google" : Build.BOOTLOADER)
+                                .brand(brandSpoof ? "google" : Build.BRAND)
                                 .clientId("android-google")
                                 .device(brandSpoof ? "generic" : Build.DEVICE)
                                 .fingerprint(brandSpoof ? "google/coral/coral:10/QD1A.190821.007/5831595:user/release-keys" : Build.FINGERPRINT)
@@ -97,6 +97,7 @@ public class CheckinClient {
                                 .manufacturer(brandSpoof ? "Google" : Build.MANUFACTURER)
                                 .model(brandSpoof ? "mainline" : Build.MODEL)
                                 .otaInstalled(false) // TODO?
+                                //.packageVersionCode(Constants.MAX_REFERENCE_VERSION)
                                 .product(brandSpoof ? "coral" : Build.PRODUCT)
                                 .radio(brandSpoof ? "" : Build.RADIO)
                                 .sdkVersion(brandSpoof ? 29 : Build.VERSION.SDK_INT)
@@ -139,7 +140,7 @@ public class CheckinClient {
                 .loggingId(new Random().nextLong()) // TODO: static
                 .meid(deviceIdent.meid)
                 .otaCert(Collections.singletonList("71Q6Rn2DDZl1zPDVaaeEHItd"))
-                .serial(Build.SERIAL)
+                .serial(Build.SERIAL != null && !Build.SERIAL.isEmpty() ? Build.SERIAL : null)
                 .timeZone(TimeZone.getDefault().getID())
                 .userName((String) TODO)
                 .userSerialNumber((Integer) TODO)

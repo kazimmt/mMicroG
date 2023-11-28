@@ -13,12 +13,14 @@ dependencies {
     api "androidx.lifecycle:lifecycle-service:$lifecycleVersion"
 
     implementation "androidx.annotation:annotation:$annotationVersion"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 }
 
 android {
-    compileSdk androidCompileSdk
-    // buildToolsVersion "$androidBuildVersionTools"
+    namespace "org.microg.gms.chimera.core"
+
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
         versionName version
@@ -31,8 +33,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = 1.8
     }
 }
 

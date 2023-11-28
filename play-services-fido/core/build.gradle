@@ -5,7 +5,6 @@
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
@@ -16,37 +15,35 @@ dependencies {
     implementation project(':play-services-safetynet')
     implementation project(':play-services-tasks-ktx')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
 
-    implementation "androidx.appcompat:appcompat:1.6.1"
-    implementation "androidx.biometric:biometric:1.1.0"
-    implementation "androidx.core:core-ktx:1.10.1"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
-    implementation "androidx.lifecycle:lifecycle-service:2.6.1"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "androidx.biometric:biometric:$biometricVersion"
+    implementation "androidx.core:core-ktx:$coreVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-service:$lifecycleVersion"
 
     // Navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
-    implementation "com.android.volley:volley:1.2.1"
+    implementation "com.android.volley:volley:$volleyVersion"
     implementation 'com.upokecenter:cbor:4.5.2'
-    implementation 'com.google.guava:guava:32.0.1-jre'
+    implementation 'com.google.guava:guava:31.1-android'
 }
 
 android {
-    compileSdk androidCompileSdk
-    // buildToolsVersion "$androidBuildVersionTools"
+    namespace "org.microg.gms.fido.core"
+
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion "$androidBuildVersionTools"
 
     defaultConfig {
         versionName version
         minSdkVersion androidMinSdk
         targetSdkVersion androidTargetSdk
-
-        manifestPlaceholders = [
-                basePackageName: "$basePackageName"
-        ]
     }
 
     buildFeatures {
@@ -62,12 +59,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17
+        jvmTarget = 1.8
     }
 }
 

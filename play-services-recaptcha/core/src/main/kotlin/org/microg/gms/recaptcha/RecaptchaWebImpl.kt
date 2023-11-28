@@ -61,13 +61,15 @@ import kotlin.coroutines.suspendCoroutine
 private const val TAG = "RecaptchaWeb"
 
 @RequiresApi(19)
-class RecaptchaWebImpl(private val context: Context, private val packageName: String, override val lifecycle: Lifecycle) : RecaptchaImpl, LifecycleOwner {
+class RecaptchaWebImpl(private val context: Context, private val packageName: String, private val lifecycle: Lifecycle) : RecaptchaImpl, LifecycleOwner {
     private var webView: WebView? = null
     private var lastRequestToken: String? = null
     private var initFinished = AtomicBoolean(true)
     private var initContinuation: Continuation<Unit>? = null
     private var executeFinished = AtomicBoolean(true)
     private var executeContinuation: Continuation<String>? = null
+
+    override fun getLifecycle(): Lifecycle = lifecycle
 
     override suspend fun init(params: InitParams): RecaptchaHandle {
         lastRequestToken = UUID.randomUUID().toString()
@@ -171,7 +173,7 @@ class RecaptchaWebImpl(private val context: Context, private val packageName: St
 
     companion object {
         private const val MWV_URL = "https://www.recaptcha.net/recaptcha/api3/mwv"
-        private const val DEBUG = true
+        private const val DEBUG = false
         object FakeApplication : Application() {
             var context: Context
                 get() = baseContext
@@ -300,6 +302,8 @@ class RecaptchaWebImpl(private val context: Context, private val packageName: St
                 cls == FakeApplication.javaClass && name == "registerReceiver" -> cls.getMethod(name, *params)
                 cls == PackageManager::class.java && name == "checkPermission" -> cls.getMethod(name, *params)
                 cls == Context::class.java && name == "checkSelfPermission" -> cls.getMethod(name, *params)
+                cls == Context::class.java && name == "getPackageManager" -> cls.getMethod(name, *params)
+                cls == Context::class.java && name == "getPackageName" -> cls.getMethod(name, *params)
                 cls == AudioManager::class.java && name == "getStreamVolume" -> cls.getMethod(name, *params)
                 cls == Settings.System::class.java && name == "getInt" -> cls.getMethod(name, *params)
                 cls == DateFormat::class.java -> cls.getMethod(name, *params)

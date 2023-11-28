@@ -72,7 +72,7 @@ public class RecaptchaClientImpl extends GoogleApi<Api.ApiOptions.NoOptions> imp
             ExecuteParams params = new ExecuteParams();
             params.handle = handle;
             params.action = action;
-            params.version = BuildConfig.VERSION_NAME;
+            params.version = "18.1.1";
             client.execute(new IExecuteCallback.Stub() {
                 @Override
                 public void onData(Status status, RecaptchaResultData data) throws RemoteException {
@@ -101,7 +101,7 @@ public class RecaptchaClientImpl extends GoogleApi<Api.ApiOptions.NoOptions> imp
         return scheduleTask((PendingGoogleApiCall<RecaptchaHandle, RecaptchaGmsClient>) (client, completionSource) -> {
             InitParams params = new InitParams();
             params.siteKey = siteKey;
-            params.version = "23.21.15";
+            params.version = "18.1.1";
             client.init(new IInitCallback.Stub() {
                 @Override
                 public void onHandle(Status status, RecaptchaHandle handle) throws RemoteException {

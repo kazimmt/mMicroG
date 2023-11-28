@@ -11,16 +11,18 @@ import com.google.android.gms.common.api.internal.ApiKey;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 
+import org.microg.gms.common.Hide;
 import org.microg.gms.common.PublicApi;
-import org.microg.gms.common.api.ApiClient;
 import org.microg.gms.common.api.GoogleApiManager;
 import org.microg.gms.common.api.PendingGoogleApiCall;
 
 @PublicApi
 public abstract class GoogleApi<O extends Api.ApiOptions> implements HasApiKey<O> {
     private GoogleApiManager manager;
-    @PublicApi(exclude = true)
+    @Hide
     public Api<O> api;
+    @Hide
+    public O options;
 
     @PublicApi(exclude = true)
     protected GoogleApi(Context context, Api<O> api) {
@@ -29,7 +31,14 @@ public abstract class GoogleApi<O extends Api.ApiOptions> implements HasApiKey<O
     }
 
     @PublicApi(exclude = true)
-    protected <R, A extends ApiClient> Task<R> scheduleTask(PendingGoogleApiCall<R, A> apiCall) {
+    protected GoogleApi(Context context, Api<O> api, O options) {
+        this.api = api;
+        this.manager = GoogleApiManager.getInstance(context);
+        this.options = options;
+    }
+
+    @PublicApi(exclude = true)
+    protected <R, A extends Api.Client> Task<R> scheduleTask(PendingGoogleApiCall<R, A> apiCall) {
         TaskCompletionSource<R> completionSource = new TaskCompletionSource<>();
         manager.scheduleTask(this, apiCall, completionSource);
         return completionSource.getTask();
@@ -43,6 +52,6 @@ public abstract class GoogleApi<O extends Api.ApiOptions> implements HasApiKey<O
 
     @PublicApi(exclude = true)
     public O getOptions() {
-        return null;
+        return options;
     }
 }
