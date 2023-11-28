@@ -11,3 +11,5 @@ local.properties
 .settings
 .classpath
 .project
+.json
+.apk
